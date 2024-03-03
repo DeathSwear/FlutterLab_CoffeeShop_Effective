@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
+import 'package:flutter_course/src/theme/app_colors.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -8,7 +9,7 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: AppColors.backgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

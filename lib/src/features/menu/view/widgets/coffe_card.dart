@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_course/src/theme/app_colors.dart';
+
+import 'package:flutter_course/src/features/menu/data/text_styles.dart';
+
 class CoffeCard extends StatelessWidget {
   const CoffeCard({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,10 @@ class CoffeCard extends StatelessWidget {
             ),
           const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text('Олеато'),
+            child: Text(
+                'Олеато',
+                style: AppTextStyles.subtitle,
+            ),
           ),
           SizedBox(
             height: 24,
@@ -31,12 +37,15 @@ class CoffeCard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   elevation: 10,
                   //fixedSize: const Size(116, 24),
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.grey,
+                  backgroundColor: AppColors.mainColor,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.zero,
               ),
-              child: Text('100 руб'),
+              child: Text(
+                  '100 руб',
+                  style: AppTextStyles.price,
+              ),
             ),
           )
 
