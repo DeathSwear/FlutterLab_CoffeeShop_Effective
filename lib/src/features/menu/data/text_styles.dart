@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
@@ -18,6 +17,12 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w700,
     letterSpacing: 0.4
+  );
+  static const priceChange = TextStyle(
+      color: Colors.white,
+      fontSize: 17,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.4
   );
   static const chipActive = TextStyle(
     color: Colors.white,
