@@ -14,9 +14,12 @@ class Category extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                data.title,
-                style: AppTextStyles.title,
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    data.title,
+                    style: AppTextStyles.title,
+                  ),
               ),
               SizedBox(
                 height: 200,

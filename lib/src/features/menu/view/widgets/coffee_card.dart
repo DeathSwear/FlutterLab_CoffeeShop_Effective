@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class CoffeeCard extends StatefulWidget {
 
