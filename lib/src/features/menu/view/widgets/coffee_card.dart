@@ -60,7 +60,28 @@ class _CoffeeCardState extends State<CoffeeCard> {
           Image(
               image: AssetImage(widget.data.ico),
               height: 100,
-            ),
+            errorBuilder:
+                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return const Image(
+                      image: AssetImage('lib/src/assets/images/outdate_image.png'),
+                      height: 100
+                  );
+                },
+            loadingBuilder: (BuildContext context, Widget child,
+              ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+          ),
           Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(

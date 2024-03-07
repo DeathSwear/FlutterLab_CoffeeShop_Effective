@@ -1,6 +1,7 @@
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
 import 'package:flutter_course/src/features/menu/models/category_model.dart';
 
+// представим, что в процессе получения данных были созданы вот такие структуры данных
 class DataExample{
   static List<CardModel> cards_db_example =
       [
@@ -36,6 +37,10 @@ class DataExample{
     'Кофе с молоком',
     'Чай',
     'НеКофе',
+    'Чай с молоком',
+    'Молочные коктейли',
+    'Эклеры',
+    'Печенье',
   ];
 
   static List<CategoryModel> category_db_example =
@@ -54,6 +59,22 @@ class DataExample{
         ),
         CategoryModel(
             title: 'НеКофе',
+            card: cards_db_example
+        ),
+        CategoryModel(
+            title: 'Чай с молоком',
+            card: cards_db_example
+        ),
+        CategoryModel(
+            title: 'Молочные коктейли',
+            card: cards_db_example
+        ),
+        CategoryModel(
+            title: 'Эклеры',
+            card: cards_db_example
+        ),
+        CategoryModel(
+            title: 'Печенье',
             card: cards_db_example
         ),
       ];
