@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
+import 'package:flutter_course/src/features/menu/models/category_model.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
+import 'package:flutter_course/src/repositories/menu_categories/menu_categories_api.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter_course/src/features/menu/data/data_example.dart';
@@ -79,8 +81,6 @@ class _MenuScreenState extends State<MenuScreen> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,6 +138,10 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                 ),
               ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () { MenuCategoriesAPI().getCategoriesList(); },
+        child: const Icon(Icons.download),
+      ),
           );
   }
 

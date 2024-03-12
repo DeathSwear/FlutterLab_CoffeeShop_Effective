@@ -6,28 +6,38 @@ class DataExample{
   static List<CardModel> cards_db_example =
       [
         const CardModel(
+            id: 1,
             ico: 'lib/src/assets/images/example_image.png',
             name: 'Айс Кофе',
+            description: 'описание картинки',
             price: '100 руб'
         ),
         const CardModel(
+            id: 2,
             ico: 'lib/src/assets/images/example_image.png',
             name: 'Айс Кофе2',
+            description: 'описание картинки',
             price: '120 руб'
         ),
         const CardModel(
+            id: 3,
             ico: 'lib/src/assets/images/example_image.png',
             name: 'Айс Кофе3',
+            description: 'описание картинки',
             price: '130 руб'
         ),
         const CardModel(
+            id: 4,
             ico: 'lib/src/assets/images/example_image.png',
             name: 'Айс Кофе4',
+            description: 'описание картинки',
             price: '140 руб'
         ),
         const CardModel(
+            id: 5,
             ico: 'lib/src/assets/images/example_image.png',
             name: 'Айс Кофе5',
+            description: 'описание картинки',
             price: '150 руб'
         ),
       ];
