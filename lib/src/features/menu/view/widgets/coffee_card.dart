@@ -58,7 +58,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image(
-              image: AssetImage(widget.data.ico),
+              image: NetworkImage(widget.data.ico),
               height: 100,
             errorBuilder:
                 (BuildContext context, Object exception, StackTrace? stackTrace) {
