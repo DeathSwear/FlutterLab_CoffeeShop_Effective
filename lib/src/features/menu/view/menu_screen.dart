@@ -9,10 +9,9 @@ import 'package:flutter_course/src/repositories/menu_categories/abstract_categor
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'dart:developer' as developer;
 
 class MenuScreen extends StatefulWidget {
-
+  const MenuScreen({super.key});
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
@@ -42,7 +41,7 @@ class _MenuScreenState extends State<MenuScreen> {
     playingAnimation = true;
     itemController.scrollTo(
         index: ind,
-      duration: const Duration(milliseconds: 200)
+      duration: const Duration(milliseconds: 200),
     );
     await Future.delayed(const Duration(milliseconds: 200));
     playingAnimation = false;
@@ -52,7 +51,7 @@ class _MenuScreenState extends State<MenuScreen> {
   void barScrollToItem(int ind) async {
     barItemController.scrollTo(
         index: ind,
-        duration: const Duration(milliseconds: 120)
+        duration: const Duration(milliseconds: 120),
     );
   }
 
@@ -121,7 +120,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ScrollablePositionedList.separated(
                   scrollDirection: Axis.horizontal,
                   itemScrollController: barItemController,
-                  separatorBuilder: (context, _) => SizedBox(width: 16),
+                  separatorBuilder: (context, _) => const SizedBox(width: 16),
                   itemCount: state.tagsList.length,
                   itemBuilder: (context, index) =>
                       Container(
@@ -131,7 +130,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           onPressed: () => {
                             setCurrent(index),
                             scrollToItem(index),
-                            barScrollToItem(index)
+                            barScrollToItem(index),
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 10,
@@ -139,7 +138,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             backgroundColor: index == current? AppColors.mainColor : AppColors.white,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                           ),
                           child: Text(
                             state.tagsList[index].tag,
@@ -148,8 +147,8 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                       ),
                 );
-                return SizedBox();
-              }
+                return const SizedBox();
+              },
             ),
           ),
         ),
@@ -196,7 +195,7 @@ class _MenuScreenState extends State<MenuScreen> {
             );
           }
           return const Center(child: CircularProgressIndicator());
-        }
+        },
       ),
       floatingActionButton:
           BlocBuilder<SelectedProductsListBloc, SelectedProductsListState>(
@@ -204,7 +203,7 @@ class _MenuScreenState extends State<MenuScreen> {
               builder: (context, state){
                 return state.cards.isNotEmpty ? SizedBox(
                     height: 45,
-                    width: 110,
+                    width: 120,
                     child: TextButton(
                         onPressed: () {
                           showModalBottomSheet(
@@ -212,7 +211,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             elevation: 0,
                             showDragHandle: true,
                             backgroundColor: Colors.white,
-                            builder: (context) => MenuBottomSheet(categoriesListBloc: _categoriesListBloc),
+                            builder: (context) => const MenuBottomSheet(),
                           );
                         },
                         style: button_style,
@@ -223,17 +222,17 @@ class _MenuScreenState extends State<MenuScreen> {
                               image: AssetImage('lib/src/assets/images/buy_image.png'),
                               height: 18,
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             Text(
-                              '${state.counter} Р',
+                              '${state.counter.toStringAsFixed(2)} ₽',
                               style: AppTextStyles.price,
-                            )
+                            ),
                           ],
-                        )
+                        ),
 
-                    )
+                    ),
                 ) : Container();
-              }
+              },
           ),
     );
   }

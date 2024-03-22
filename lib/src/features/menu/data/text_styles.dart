@@ -57,4 +57,10 @@ class AppTextStyles {
       fontWeight: FontWeight.w400,
       letterSpacing: 0.4
   );
+  static const snackBarText = TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.25
+  );
 }

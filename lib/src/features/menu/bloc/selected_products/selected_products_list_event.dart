@@ -2,7 +2,10 @@ part of 'selected_products_list_bloc.dart';
 
 abstract class SelectedProductsListEvent {}
 
-class PostCategoriesList extends SelectedProductsListEvent {}
+class PostCategoriesList extends SelectedProductsListEvent {
+  PostCategoriesList({required this.context});
+  final BuildContext context;
+}
 
 class ClearCategoriesList extends SelectedProductsListEvent {}
 

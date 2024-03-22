@@ -73,7 +73,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical:  16),
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20)
+            borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,11 +88,11 @@ class _CoffeeCardState extends State<CoffeeCard> {
               errorWidget: (context, url, error) =>
               const Image(
                   image: AssetImage('lib/src/assets/images/outdate_image.png'),
-                  height: 100
+                  height: 100,
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
                 widget.data.name,
                 style: AppTextStyles.subtitle,
@@ -107,7 +107,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                   child: Text(
                     '${widget.data.price} ${widget.data.priceType}',
                     style: AppTextStyles.price,
-                  )
+                  ),
               )
                   :
               Row(
@@ -135,7 +135,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                       child: Text(
                         '$_counter',
                         style: AppTextStyles.price,
-                      )
+                      ),
                   ),
                   SizedBox(
                     width: 24,

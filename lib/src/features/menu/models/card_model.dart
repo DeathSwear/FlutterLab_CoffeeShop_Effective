@@ -12,6 +12,6 @@ class CardModel{
   final String ico;
   final String name;
   final String description;
-  final int price;
+  final num price;
   final String priceType;
 }

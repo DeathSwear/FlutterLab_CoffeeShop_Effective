@@ -11,7 +11,7 @@ class SelectedProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 6, right: 6, top: 8),
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,10 +28,10 @@ class SelectedProduct extends StatelessWidget {
                     errorWidget: (context, url, error) =>
                     const Image(
                         image: AssetImage('lib/src/assets/images/outdate_image.png'),
-                        height: 55
+                        height: 55,
                     ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Text(
                     data.name,
                     style: AppTextStyles.bottomsheetProductName,
@@ -41,7 +41,7 @@ class SelectedProduct extends StatelessWidget {
             Text(
                 '${data.price} ${data.priceType}',
                 style: AppTextStyles.bottomsheetProductPrice,
-            )
+            ),
           ],
         ),
     );
