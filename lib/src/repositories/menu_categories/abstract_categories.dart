@@ -5,4 +5,5 @@ abstract class AbstractMenuCategoriesAPI {
   Future<void> getCategoriesList();
   Future<List<TagModel>> getCategoriesTagsList();
   Future<List<CardModel>> getProductsByCategoryList(int id);
+  Future<void> postProductsList();
 }

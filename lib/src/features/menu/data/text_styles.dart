@@ -34,4 +34,27 @@ class AppTextStyles {
       fontSize: 14,
       fontWeight: FontWeight.w400,
   );
+  static const bottomsheetTitle = TextStyle(
+    color: Colors.black,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+  );
+  static const bottomsheetProductName = TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    letterSpacing: 0.15,
+    fontWeight: FontWeight.w500,
+  );
+  static const bottomsheetProductPrice = TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    letterSpacing: 0.4,
+    fontWeight: FontWeight.w500,
+  );
+  static const bottomsheetMakeAnOrder = TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4
+  );
 }

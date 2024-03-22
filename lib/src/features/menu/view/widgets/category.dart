@@ -26,6 +26,8 @@ class _CategoryState extends State<Category>{
 
     });
   }*/
+
+
   final _productsListBloc = ProductsListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
   @override
   void initState() {

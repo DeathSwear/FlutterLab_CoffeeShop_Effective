@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
+import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
+import 'package:get_it/get_it.dart';
 
 class CoffeeCard extends StatefulWidget {
 
@@ -14,17 +17,21 @@ class CoffeeCard extends StatefulWidget {
 
 class _CoffeeCardState extends State<CoffeeCard> {
 
+  final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>(); //= SelectedProductsListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
+
   int _counter = 0;
 
   void _incrementCounter() {
     if(_counter < 10)
       setState(() {
+        _selected_productsListBloc.add(AddToCategoriesList(card: widget.data));
         _counter++;
       });
   }
   void _decrementCounter() {
     if(_counter > 0)
       setState(() {
+        _selected_productsListBloc.add(RemoveFromCategoriesList(card: widget.data));
         _counter--;
       });
   }

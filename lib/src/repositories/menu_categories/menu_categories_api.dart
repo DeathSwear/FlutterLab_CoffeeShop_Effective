@@ -88,4 +88,9 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesAPI{
     return productsByCategoryID;
   }
 
+  @override
+  Future<void> postProductsList() async {
+    developer.log('Отправил данные!!!!!', name: 'API');
+  }
+
 }

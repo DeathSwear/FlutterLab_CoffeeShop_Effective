@@ -4,6 +4,7 @@ import 'package:flutter_course/src/features/menu/bloc/categories/categories_list
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/models/category_model.dart';
 import 'package:flutter_course/src/features/menu/models/tag_model.dart';
+import 'package:flutter_course/src/features/menu/view/widgets/bottom_sheet.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:flutter_course/src/repositories/menu_categories/menu_categories_api.dart';
@@ -19,7 +20,6 @@ class MenuScreen extends StatefulWidget {
   _MenuScreenState createState() => _MenuScreenState();
 }
 class _MenuScreenState extends State<MenuScreen> {
-
   final itemListener = ItemPositionsListener.create();
 
   bool playingAnimation = false;
@@ -51,7 +51,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   bool onBottom = false;
 
-  final _categoriesListBloc = CategoriesListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
+
   /*List<TagModel>? categoryTags;
   void getTags() async {
     categoryTags = await GetIt.I<AbstractMenuCategoriesAPI>().getCategoriesTagsList();
@@ -59,6 +59,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
     });
   }*/
+  final _categoriesListBloc = CategoriesListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
   int listTagsLength = 0;
   @override
   void initState() {
@@ -187,7 +188,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     onPressed: () {
                       _categoriesListBloc.add(LoadCategoriesList());
                     },
-                    child: const Text('Try againg'),
+                    child: const Text('Try again'),
                   ),
                 ],
               ),
@@ -197,10 +198,19 @@ class _MenuScreenState extends State<MenuScreen> {
         }
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { GetIt.I<AbstractMenuCategoriesAPI>().getCategoriesList(); },
+        onPressed: () {
+          //GetIt.I<AbstractMenuCategoriesAPI>().getCategoriesList();
+            showModalBottomSheet(
+                context: context,
+                elevation: 0,
+                showDragHandle: true,
+                backgroundColor: Colors.white,
+                builder: (context) => MenuBottomSheet(),
+            );
+          },
         child: const Icon(Icons.download),
       ),
-          );
+    );
   }
 /*
   та функция с апи  - будет теги давать.

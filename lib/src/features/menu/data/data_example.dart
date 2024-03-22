@@ -89,3 +89,9 @@ class DataExample{
         ),
       ];
 }
+
+class AppStrings {
+  static const String bottomsheetMakeAnOrder = 'Оформить заказ';
+  static const String bottomsheetTitle = 'Ваш заказ';
+
+}
