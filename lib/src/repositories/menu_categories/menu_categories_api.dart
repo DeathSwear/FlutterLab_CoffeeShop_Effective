@@ -15,7 +15,7 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesAPI{
   });
   final Dio dio;
 
-  @override
+  /*@override
   Future<void> getCategoriesList() async {
 
     developer.log('start get All', name: 'API');
@@ -49,7 +49,7 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesAPI{
     debugPrint(categoriesList.toString());
 
 
-  }
+  }*/
 
   @override
   Future<List<TagModel>> getCategoriesTagsList() async {
@@ -82,7 +82,8 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesAPI{
         ico: value['imageUrl'].toString(),
         name: value['name'].toString(),
         description: value['description'].toString(),
-        price: '100 руб',
+        price: 100,
+        priceType: 'руб',
       )));
 
     return productsByCategoryID;

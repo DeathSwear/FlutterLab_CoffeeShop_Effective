@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
+import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
-import 'package:flutter_course/src/features/menu/models/category_model.dart';
-import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/bottom_sheet.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
-import 'package:flutter_course/src/repositories/menu_categories/menu_categories_api.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:flutter_course/src/features/menu/data/data_example.dart';
-
 import 'dart:developer' as developer;
+
 class MenuScreen extends StatefulWidget {
 
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
 class _MenuScreenState extends State<MenuScreen> {
+
+  static ButtonStyle button_style = ElevatedButton.styleFrom(
+    elevation: 0,
+    alignment: Alignment.center,
+    backgroundColor: AppColors.mainColor,
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    padding: EdgeInsets.zero,
+  );
+
   final itemListener = ItemPositionsListener.create();
 
   bool playingAnimation = false;
@@ -51,14 +58,6 @@ class _MenuScreenState extends State<MenuScreen> {
 
   bool onBottom = false;
 
-
-  /*List<TagModel>? categoryTags;
-  void getTags() async {
-    categoryTags = await GetIt.I<AbstractMenuCategoriesAPI>().getCategoriesTagsList();
-    setState(() {
-
-    });
-  }*/
   final _categoriesListBloc = CategoriesListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
   int listTagsLength = 0;
   @override
@@ -97,10 +96,12 @@ class _MenuScreenState extends State<MenuScreen> {
           barScrollToItem(fullVisible[0]);
         }
       }
-      developer.log('(итого): $fullVisible', name: 'top-bot');
-      developer.log('curr: $current', name: 'curr');
+      //developer.log('(итого): $fullVisible', name: 'top-bot');
+      //developer.log('curr: $current', name: 'curr');
     });
   }
+
+  final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -197,34 +198,44 @@ class _MenuScreenState extends State<MenuScreen> {
           return const Center(child: CircularProgressIndicator());
         }
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //GetIt.I<AbstractMenuCategoriesAPI>().getCategoriesList();
-            showModalBottomSheet(
-                context: context,
-                elevation: 0,
-                showDragHandle: true,
-                backgroundColor: Colors.white,
-                builder: (context) => MenuBottomSheet(),
-            );
-          },
-        child: const Icon(Icons.download),
-      ),
+      floatingActionButton:
+          BlocBuilder<SelectedProductsListBloc, SelectedProductsListState>(
+              bloc: _selected_productsListBloc,
+              builder: (context, state){
+                return state.cards.isNotEmpty ? SizedBox(
+                    height: 45,
+                    width: 110,
+                    child: TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            elevation: 0,
+                            showDragHandle: true,
+                            backgroundColor: Colors.white,
+                            builder: (context) => MenuBottomSheet(categoriesListBloc: _categoriesListBloc),
+                          );
+                        },
+                        style: button_style,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Image(
+                              image: AssetImage('lib/src/assets/images/buy_image.png'),
+                              height: 18,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              '${state.counter} Р',
+                              style: AppTextStyles.price,
+                            )
+                          ],
+                        )
+
+                    )
+                ) : Container();
+              }
+          ),
     );
   }
-/*
-  та функция с апи  - будет теги давать.
-  в категории передавать Теги. Внутри категорий стейтовое isLoading? которое в начале true,
-  а становится false когда получу данные с API, преобразованные в лист карточек.
-  пока оно true, то SizedBox(height: ххх), что бы верстка не скакала.
-
-  В той же категориес сделаю подгрузку данных постепенную.
-
-
-
-
-
- */
-
 
 }

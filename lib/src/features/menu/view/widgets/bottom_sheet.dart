@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
+import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/data_example.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/selected_product.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
+import 'package:get_it/get_it.dart';
 
 class MenuBottomSheet extends StatefulWidget {
-  const MenuBottomSheet({super.key});
+  const MenuBottomSheet({super.key, required this.categoriesListBloc});
+  final CategoriesListBloc categoriesListBloc;
+
   @override
   _MenuBottomSheetState createState() => _MenuBottomSheetState();
 }
@@ -30,17 +36,19 @@ class _MenuBottomSheetState extends State<MenuBottomSheet> {
     padding: EdgeInsets.zero,
   );
 
+  final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
+
   @override
   Widget build(BuildContext context) {
   return DraggableScrollableSheet(
     initialChildSize: 1,
     builder: (_, controller) => Container(
       color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +61,11 @@ class _MenuBottomSheetState extends State<MenuBottomSheet> {
                       height: 24,
                       width: 24,
                       child: TextButton(
-                        onPressed: () => {},
+                        onPressed: () {
+                        _selected_productsListBloc.add(ClearCategoriesList());
+                        widget.categoriesListBloc.add(LoadCategoriesList());
+                        Navigator.pop(context);
+                        },
                         style: trash_button_style,
                         child: const Image(
                             image: AssetImage('lib/src/assets/images/trash_image.png'),
@@ -66,26 +78,33 @@ class _MenuBottomSheetState extends State<MenuBottomSheet> {
           ),
           const Divider(),
           Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) => SelectedProduct(data: DataExample.cards_db_example[index]),
-              itemCount: DataExample.cards_db_example.length,
+            child: BlocBuilder<SelectedProductsListBloc, SelectedProductsListState>(
+              bloc: _selected_productsListBloc,
+              builder: (context, state){
+                return state.cards.isNotEmpty ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) => SelectedProduct(data: state.cards[index]),
+                    itemCount: state.cards.length,
+                  ) : const SizedBox();
+              }
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           SizedBox(
             height: 56,
             width: double.infinity,
             child: ElevatedButton(
-                onPressed: () => {},
+                onPressed: () {
+                  _selected_productsListBloc.add(PostCategoriesList());
+                },
                 style: button_style,
-                child: Text(
+                child: const Text(
                   AppStrings.bottomsheetMakeAnOrder,
                   style: AppTextStyles.bottomsheetMakeAnOrder,
                 )
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
         ],
       )
       ),

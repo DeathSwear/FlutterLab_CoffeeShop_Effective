@@ -4,55 +4,44 @@ import 'package:flutter_course/src/features/menu/models/card_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'dart:async';
 
-class SelectedProductsListBloc extends Bloc<SelectedProductsListEvent, List<CardModel>> {
-  SelectedProductsListBloc(this.categoriesRepository) : super([]) {
+part 'selected_products_list_event.dart';
+part 'selected_products_list_state.dart';
+
+
+class SelectedProductsListBloc extends Bloc<SelectedProductsListEvent, SelectedProductsListState> {
+  SelectedProductsListBloc(this.categoriesRepository) : super(SelectedProductsListState([], 0)) {
     on<PostCategoriesList>(_post);
     on<AddToCategoriesList>(_add);
     on<ClearCategoriesList>(_clear);
     on<RemoveFromCategoriesList>(_remove);
   }
 
-  void _add(AddToCategoriesList event, Emitter<List<CardModel>> emit) {
-    List<CardModel> stateNew = state;
-    stateNew.add(event.card);
-    emit(stateNew);
-    debugPrint(state.toString());
+  void _add(AddToCategoriesList event, Emitter<SelectedProductsListState> emit) {
+    final newState = state.copyWith(
+      cards: List.of(state.cards)..add(event.card),
+      counter: state.counter + event.card.price,
+    );
+    emit(newState);
+    debugPrint(newState.toString());
   }
 
-  void _clear(ClearCategoriesList event, Emitter<List<CardModel>> emit) {
-    List<CardModel> stateNew = [];
-    emit(stateNew);
+  void _clear(ClearCategoriesList event, Emitter<SelectedProductsListState> emit) {
+    emit(SelectedProductsListState([], 0));
   }
 
-  void _remove(RemoveFromCategoriesList event, Emitter<List<CardModel>> emit) {
-    List<CardModel> stateNew = state;
-    stateNew.remove(event.card);
-    emit(stateNew);
-    debugPrint(state.toString());
+  void _remove(RemoveFromCategoriesList event, Emitter<SelectedProductsListState> emit) {
+    final newState = state.copyWith(
+      cards: List.of(state.cards)..remove(event.card),
+      counter: state.counter - event.card.price,
+    );
+    emit(newState);
+    debugPrint(newState.toString());
   }
 
   final AbstractMenuCategoriesAPI categoriesRepository;
 
-  Future<void> _post(PostCategoriesList event, Emitter<List<CardModel>> emit) async {
-
+  Future<void> _post(PostCategoriesList event, Emitter<SelectedProductsListState> emit) async {
+    //
   }
-
 }
 
-//
-//events
-abstract class SelectedProductsListEvent {}
-
-class PostCategoriesList extends SelectedProductsListEvent {}
-
-class ClearCategoriesList extends SelectedProductsListEvent {}
-
-class AddToCategoriesList extends SelectedProductsListEvent {
-  AddToCategoriesList({required this.card});
-  final CardModel card;
-}
-
-class RemoveFromCategoriesList extends SelectedProductsListEvent {
-  RemoveFromCategoriesList({required this.card});
-  final CardModel card;
-}

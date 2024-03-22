@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
-import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:get_it/get_it.dart';
@@ -36,6 +37,12 @@ class _CoffeeCardState extends State<CoffeeCard> {
       });
   }
 
+  void _setCounterZero() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+
   static ButtonStyle button_style = ElevatedButton.styleFrom(
       elevation: 10,
       alignment: Alignment.center,
@@ -55,103 +62,98 @@ class _CoffeeCardState extends State<CoffeeCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical:  16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image(
-              image: NetworkImage(widget.data.ico),
+    return BlocListener<SelectedProductsListBloc, SelectedProductsListState>(
+      bloc: _selected_productsListBloc,
+      listener: (context, state) {
+        setState(() {
+          if( (state.counter == 0) && (_counter != 0)) _setCounterZero();
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical:  16),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20)
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CachedNetworkImage(
+              imageUrl: widget.data.ico,
               height: 100,
-            errorBuilder:
-                (BuildContext context, Object exception, StackTrace? stackTrace) {
-                  return const Image(
-                      image: AssetImage('lib/src/assets/images/outdate_image.png'),
-                      height: 100
-                  );
-                },
-            loadingBuilder: (BuildContext context, Widget child,
-              ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return Center(
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                        : null,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                    child: CircularProgressIndicator(value: downloadProgress.progress),
                   ),
-                );
-              },
-          ),
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              widget.data.name,
-                style: AppTextStyles.subtitle,
+              errorWidget: (context, url, error) =>
+              const Image(
+                  image: AssetImage('lib/src/assets/images/outdate_image.png'),
+                  height: 100
+              ),
             ),
-          ),
-          SizedBox(
-            height: 24,
-            width: 116,
-            child: _counter == 0? TextButton(
-              onPressed: _incrementCounter,
-              style: button_style,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                widget.data.price,
-                  style: AppTextStyles.price,
+                widget.data.name,
+                style: AppTextStyles.subtitle,
+              ),
+            ),
+            SizedBox(
+              height: 24,
+              width: 116,
+              child: _counter == 0? TextButton(
+                  onPressed: _incrementCounter,
+                  style: button_style,
+                  child: Text(
+                    '${widget.data.price} ${widget.data.priceType}',
+                    style: AppTextStyles.price,
+                  )
               )
-            )
-            :
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 24,
-                  child: TextButton(
-                    onPressed: _decrementCounter,
-                    style: button_style,
-                    child: const Text(
-                      '-',
-                      style: AppTextStyles.priceChange,
+                  :
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 24,
+                    child: TextButton(
+                      onPressed: _decrementCounter,
+                      style: button_style,
+                      child: const Text(
+                        '-',
+                        style: AppTextStyles.priceChange,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                    width: 52,
-                    height: 24,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColors.mainColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  child: Text(
+                  Container(
+                      width: 52,
+                      height: 24,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
                         '$_counter',
                         style: AppTextStyles.price,
                       )
-                ),
-                SizedBox(
-                  width: 24,
-                  child: TextButton(
+                  ),
+                  SizedBox(
+                    width: 24,
+                    child: TextButton(
                       onPressed: _incrementCounter,
                       style: _counter == 10? unactive_button_style : button_style,
                       child: const Text(
                         '+',
                         style: AppTextStyles.priceChange,
                       ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-
   }
 }

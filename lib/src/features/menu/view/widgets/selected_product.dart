@@ -39,7 +39,7 @@ class SelectedProduct extends StatelessWidget {
               ],
             ),
             Text(
-                data.price,
+                '${data.price} ${data.priceType}',
                 style: AppTextStyles.bottomsheetProductPrice,
             )
           ],

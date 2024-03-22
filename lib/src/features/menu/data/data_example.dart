@@ -3,7 +3,7 @@ import 'package:flutter_course/src/features/menu/models/category_model.dart';
 
 // представим, что в процессе получения данных были созданы вот такие структуры данных
 class DataExample{
-  static List<CardModel> cards_db_example =
+  /*static List<CardModel> cards_db_example =
       [
         const CardModel(
             id: 1,
@@ -87,7 +87,7 @@ class DataExample{
             title: 'Печенье',
             card: cards_db_example
         ),
-      ];
+      ];*/
 }
 
 class AppStrings {
