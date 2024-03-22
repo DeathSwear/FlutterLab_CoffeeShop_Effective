@@ -1,11 +1,17 @@
 class CardModel{
   const CardModel({
+    required this.id,
     required this.ico,
     required this.name,
-    required this.price
+    required this.description,
+    required this.price,
+    required this.priceType,
   });
 
+  final int id;
   final String ico;
   final String name;
-  final String price;
+  final String description;
+  final num price;
+  final String priceType;
 }
