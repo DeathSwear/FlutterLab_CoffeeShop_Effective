@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course/src/app.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
-import 'package:flutter_course/src/repositories/menu_categories/menu_categories_api.dart';
+import 'package:flutter_course/src/repositories/menu_categories/sources/menu_categories_api.dart';
 import 'package:get_it/get_it.dart';
 
 void main() {
