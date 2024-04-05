@@ -12,7 +12,7 @@ part 'products_database.g.dart';
 class ProductsItems extends Table {
   IntColumn get id => integer()();
   TextColumn get ico => text()();
-  TextColumn get name => text()();
+  TextColumn get productName => text()();
   TextColumn get description => text()();
   TextColumn get price => text()();
   TextColumn get priceType => text()();
@@ -33,7 +33,7 @@ LazyDatabase _openConnection() {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, 'productsdb.sqlite'));
 
     // Also work around limitations on old Android versions
     if (Platform.isAndroid) {

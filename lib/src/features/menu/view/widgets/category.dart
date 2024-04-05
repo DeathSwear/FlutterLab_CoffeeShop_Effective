@@ -16,24 +16,11 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category>{
-
-  /*List<CardModel>? cardsList;
-  void getProducts(int id) async {
-    cardsList = await GetIt.I<AbstractMenuCategoriesAPI>().getProductsByCategoryList(id);
-    setState(() {
-
-    });
-  }*/
-
-
-  final _productsListBloc = ProductsListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
+  final _productsListBloc = ProductsListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
   @override
   void initState() {
     super.initState();
-
     _productsListBloc.add(LoadProductsList(categoryID: widget.data.id));
-
-    //getProducts(widget.data.id);
   }
 
   @override

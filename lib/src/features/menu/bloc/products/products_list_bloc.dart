@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
-import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'dart:async';
 
@@ -12,7 +11,7 @@ class ProductsListBloc extends Bloc<ProductsListEvent, ProductsListState> {
     on<LoadProductsList>(_load);
   }
 
-  final AbstractMenuCategoriesAPI categoriesRepository;
+  final AbstractMenuCategoriesRepository categoriesRepository;
 
   Future<void> _load(
       LoadProductsList event,

@@ -19,10 +19,11 @@ class $ProductsItemsTable extends ProductsItems
   late final GeneratedColumn<String> ico = GeneratedColumn<String>(
       'ico', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _productNameMeta =
+      const VerificationMeta('productName');
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
+  late final GeneratedColumn<String> productName = GeneratedColumn<String>(
+      'product_name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
@@ -49,7 +50,7 @@ class $ProductsItemsTable extends ProductsItems
       type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, ico, name, description, price, priceType, categoryID];
+      [id, ico, productName, description, price, priceType, categoryID];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -71,11 +72,13 @@ class $ProductsItemsTable extends ProductsItems
     } else if (isInserting) {
       context.missing(_icoMeta);
     }
-    if (data.containsKey('name')) {
+    if (data.containsKey('product_name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+          _productNameMeta,
+          productName.isAcceptableOrUnknown(
+              data['product_name']!, _productNameMeta));
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_productNameMeta);
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -118,8 +121,8 @@ class $ProductsItemsTable extends ProductsItems
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       ico: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}ico'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      productName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}product_name'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
       price: attachedDatabase.typeMapping
@@ -140,7 +143,7 @@ class $ProductsItemsTable extends ProductsItems
 class ProductsItem extends DataClass implements Insertable<ProductsItem> {
   final int id;
   final String ico;
-  final String name;
+  final String productName;
   final String description;
   final String price;
   final String priceType;
@@ -148,7 +151,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
   const ProductsItem(
       {required this.id,
       required this.ico,
-      required this.name,
+      required this.productName,
       required this.description,
       required this.price,
       required this.priceType,
@@ -158,7 +161,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['ico'] = Variable<String>(ico);
-    map['name'] = Variable<String>(name);
+    map['product_name'] = Variable<String>(productName);
     map['description'] = Variable<String>(description);
     map['price'] = Variable<String>(price);
     map['price_type'] = Variable<String>(priceType);
@@ -170,7 +173,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
     return ProductsItemsCompanion(
       id: Value(id),
       ico: Value(ico),
-      name: Value(name),
+      productName: Value(productName),
       description: Value(description),
       price: Value(price),
       priceType: Value(priceType),
@@ -184,7 +187,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
     return ProductsItem(
       id: serializer.fromJson<int>(json['id']),
       ico: serializer.fromJson<String>(json['ico']),
-      name: serializer.fromJson<String>(json['name']),
+      productName: serializer.fromJson<String>(json['productName']),
       description: serializer.fromJson<String>(json['description']),
       price: serializer.fromJson<String>(json['price']),
       priceType: serializer.fromJson<String>(json['priceType']),
@@ -197,7 +200,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'ico': serializer.toJson<String>(ico),
-      'name': serializer.toJson<String>(name),
+      'productName': serializer.toJson<String>(productName),
       'description': serializer.toJson<String>(description),
       'price': serializer.toJson<String>(price),
       'priceType': serializer.toJson<String>(priceType),
@@ -208,7 +211,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
   ProductsItem copyWith(
           {int? id,
           String? ico,
-          String? name,
+          String? productName,
           String? description,
           String? price,
           String? priceType,
@@ -216,7 +219,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
       ProductsItem(
         id: id ?? this.id,
         ico: ico ?? this.ico,
-        name: name ?? this.name,
+        productName: productName ?? this.productName,
         description: description ?? this.description,
         price: price ?? this.price,
         priceType: priceType ?? this.priceType,
@@ -227,7 +230,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
     return (StringBuffer('ProductsItem(')
           ..write('id: $id, ')
           ..write('ico: $ico, ')
-          ..write('name: $name, ')
+          ..write('productName: $productName, ')
           ..write('description: $description, ')
           ..write('price: $price, ')
           ..write('priceType: $priceType, ')
@@ -237,15 +240,15 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, ico, name, description, price, priceType, categoryID);
+  int get hashCode => Object.hash(
+      id, ico, productName, description, price, priceType, categoryID);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProductsItem &&
           other.id == this.id &&
           other.ico == this.ico &&
-          other.name == this.name &&
+          other.productName == this.productName &&
           other.description == this.description &&
           other.price == this.price &&
           other.priceType == this.priceType &&
@@ -255,7 +258,7 @@ class ProductsItem extends DataClass implements Insertable<ProductsItem> {
 class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
   final Value<int> id;
   final Value<String> ico;
-  final Value<String> name;
+  final Value<String> productName;
   final Value<String> description;
   final Value<String> price;
   final Value<String> priceType;
@@ -264,7 +267,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
   const ProductsItemsCompanion({
     this.id = const Value.absent(),
     this.ico = const Value.absent(),
-    this.name = const Value.absent(),
+    this.productName = const Value.absent(),
     this.description = const Value.absent(),
     this.price = const Value.absent(),
     this.priceType = const Value.absent(),
@@ -274,7 +277,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
   ProductsItemsCompanion.insert({
     required int id,
     required String ico,
-    required String name,
+    required String productName,
     required String description,
     required String price,
     required String priceType,
@@ -282,7 +285,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         ico = Value(ico),
-        name = Value(name),
+        productName = Value(productName),
         description = Value(description),
         price = Value(price),
         priceType = Value(priceType),
@@ -290,7 +293,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
   static Insertable<ProductsItem> custom({
     Expression<int>? id,
     Expression<String>? ico,
-    Expression<String>? name,
+    Expression<String>? productName,
     Expression<String>? description,
     Expression<String>? price,
     Expression<String>? priceType,
@@ -300,7 +303,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (ico != null) 'ico': ico,
-      if (name != null) 'name': name,
+      if (productName != null) 'product_name': productName,
       if (description != null) 'description': description,
       if (price != null) 'price': price,
       if (priceType != null) 'price_type': priceType,
@@ -312,7 +315,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
   ProductsItemsCompanion copyWith(
       {Value<int>? id,
       Value<String>? ico,
-      Value<String>? name,
+      Value<String>? productName,
       Value<String>? description,
       Value<String>? price,
       Value<String>? priceType,
@@ -321,7 +324,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
     return ProductsItemsCompanion(
       id: id ?? this.id,
       ico: ico ?? this.ico,
-      name: name ?? this.name,
+      productName: productName ?? this.productName,
       description: description ?? this.description,
       price: price ?? this.price,
       priceType: priceType ?? this.priceType,
@@ -339,8 +342,8 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
     if (ico.present) {
       map['ico'] = Variable<String>(ico.value);
     }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
+    if (productName.present) {
+      map['product_name'] = Variable<String>(productName.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -365,7 +368,7 @@ class ProductsItemsCompanion extends UpdateCompanion<ProductsItem> {
     return (StringBuffer('ProductsItemsCompanion(')
           ..write('id: $id, ')
           ..write('ico: $ico, ')
-          ..write('name: $name, ')
+          ..write('productName: $productName, ')
           ..write('description: $description, ')
           ..write('price: $price, ')
           ..write('priceType: $priceType, ')

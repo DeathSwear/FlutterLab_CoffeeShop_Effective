@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
+import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/bottom_sheet.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
@@ -57,12 +58,11 @@ class _MenuScreenState extends State<MenuScreen> {
 
   bool onBottom = false;
 
-  final _categoriesListBloc = CategoriesListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
+  final _categoriesListBloc = CategoriesListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
   int listTagsLength = 0;
   @override
   void initState() {
     super.initState();
-
     _categoriesListBloc.add(LoadCategoriesList());
 
     //getTags();
@@ -178,17 +178,17 @@ class _MenuScreenState extends State<MenuScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    'Что-то пошло не так',
+                    AppStrings.smthWrong,
                   ),
                   const Text(
-                    'попробуйте позже',
+                    AppStrings.willRetryWrong,
                   ),
                   const SizedBox(height: 30),
                   TextButton(
                     onPressed: () {
                       _categoriesListBloc.add(LoadCategoriesList());
                     },
-                    child: const Text('Try again'),
+                    child: const Text(AppStrings.retryLoad,),
                   ),
                 ],
               ),

@@ -11,7 +11,7 @@ class CategoriesListBloc extends Bloc<CategoriesListEvent, CategoriesListState> 
     on<LoadCategoriesList>(_load);
   }
 
-  final AbstractMenuCategoriesAPI categoriesRepository;
+  final AbstractMenuCategoriesRepository categoriesRepository;
 
   Future<void> _load(
       LoadCategoriesList event,

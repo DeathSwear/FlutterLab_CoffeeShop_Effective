@@ -42,7 +42,7 @@ class SelectedProductsListBloc extends Bloc<SelectedProductsListEvent, SelectedP
     debugPrint(newState.toString());
   }
 
-  final AbstractMenuCategoriesAPI categoriesRepository;
+  final AbstractMenuCategoriesRepository categoriesRepository;
 
   Future<void> _post(PostCategoriesList event, Emitter<SelectedProductsListState> emit) async {
     final postResult = await categoriesRepository.postProductsList(state.cards);
