@@ -36,6 +36,12 @@ class _MenuBottomSheetState extends State<MenuBottomSheet> {
 
   final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
 
+
+  Widget test1() {
+    return Text('tetetetetet');
+  }
+
+
   @override
   Widget build(BuildContext context) {
   return DraggableScrollableSheet(
@@ -70,6 +76,7 @@ class _MenuBottomSheetState extends State<MenuBottomSheet> {
                           ),
                       ),
                     ),
+                    test1(),
                   ],
               ),
           ),
