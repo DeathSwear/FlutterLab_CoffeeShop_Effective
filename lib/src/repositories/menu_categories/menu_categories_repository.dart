@@ -6,12 +6,10 @@ import 'package:flutter_course/src/repositories/menu_categories/abstract_categor
 import 'package:flutter_course/src/repositories/menu_categories/sources/menu_categories_api.dart';
 import 'package:flutter_course/src/repositories/menu_categories/sources/menu_categories_database.dart';
 
-class MenuCategoriesRepository implements AbstractMenuCategoriesRepository{
-
+class MenuCategoriesRepository implements AbstractMenuCategoriesRepository {
   MenuCategoriesRepository({
     required this.dio,
-  })
-  {
+  }) {
     MenuCategories_API = MenuCategoriesAPI(dio: dio);
   }
   final Dio dio;
@@ -20,17 +18,16 @@ class MenuCategoriesRepository implements AbstractMenuCategoriesRepository{
 
   @override
   Future<List<TagModel>> getCategoriesTagsList() async {
-
     developer.log('start getTags', name: 'REPO');
 
     List<TagModel> rawCategories = [];
     try {
       rawCategories = await MenuCategories_API.getCategoriesTagsList();
       MenuCategories_DB.saveCategoriesToDB(rawCategories);
-    } catch(e) {
+    } catch (e) {
       developer.log('category error', name: 'REPO');
       rawCategories = await MenuCategories_DB.getCategoriesTagsList();
-      if(rawCategories.length == 0) return throw Exception('nothing in DB');
+      if (rawCategories.length == 0) return throw Exception('nothing in DB');
     }
     developer.log('category return ', name: 'REPO');
 
@@ -38,17 +35,18 @@ class MenuCategoriesRepository implements AbstractMenuCategoriesRepository{
   }
 
   @override
-  Future<List<CardModel>> getProductsByCategoryList(int id) async {
-
+  Future<List<CardModel>> getProductsByCategoryList(int id, int page) async {
     developer.log('start get ProductsByCategory', name: 'REPO');
 
     List<CardModel> productsByCategoryID = [];
     try {
-      productsByCategoryID = await MenuCategories_API.getProductsByCategoryList(id);
+      productsByCategoryID =
+          await MenuCategories_API.getProductsByCategoryList(id, page);
       MenuCategories_DB.saveProductsToDB(productsByCategoryID, id);
-    } catch(e) {
+    } catch (e) {
       developer.log('get products error', name: 'REPO');
-      productsByCategoryID = await MenuCategories_DB.getProductsByCategoryList(id);
+      productsByCategoryID =
+          await MenuCategories_DB.getProductsByCategoryList(id, page);
     }
     developer.log('get products return ', name: 'REPO');
     return productsByCategoryID;

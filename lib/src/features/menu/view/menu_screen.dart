@@ -16,8 +16,8 @@ class MenuScreen extends StatefulWidget {
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
-class _MenuScreenState extends State<MenuScreen> {
 
+class _MenuScreenState extends State<MenuScreen> {
   static ButtonStyle button_style = ElevatedButton.styleFrom(
     elevation: 0,
     alignment: Alignment.center,
@@ -32,16 +32,16 @@ class _MenuScreenState extends State<MenuScreen> {
   bool playingAnimation = false;
   int current = 0;
   void setCurrent(int newCurrent) {
-      setState(() {
-        current = newCurrent;
-      });
+    setState(() {
+      current = newCurrent;
+    });
   }
 
   final itemController = ItemScrollController();
   void scrollToItem(int ind) async {
     playingAnimation = true;
     itemController.scrollTo(
-        index: ind,
+      index: ind,
       duration: const Duration(milliseconds: 200),
     );
     await Future.delayed(const Duration(milliseconds: 200));
@@ -51,14 +51,15 @@ class _MenuScreenState extends State<MenuScreen> {
   final barItemController = ItemScrollController();
   void barScrollToItem(int ind) async {
     barItemController.scrollTo(
-        index: ind,
-        duration: const Duration(milliseconds: 120),
+      index: ind,
+      duration: const Duration(milliseconds: 120),
     );
   }
 
   bool onBottom = false;
 
-  final _categoriesListBloc = CategoriesListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
+  final _categoriesListBloc =
+      CategoriesListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
   int listTagsLength = 0;
   @override
   void initState() {
@@ -73,22 +74,23 @@ class _MenuScreenState extends State<MenuScreen> {
             final isTopVisible = item.itemLeadingEdge >= 0;
             final isBottomVisible = item.itemTrailingEdge < 1.02;
             return isTopVisible && isBottomVisible;
-      }).map((item) => item.index).toList();
+          })
+          .map((item) => item.index)
+          .toList();
 
-      if(fullVisible.length == 2) {
+      if (fullVisible.length == 2) {
         if ((fullVisible[1] == listTagsLength - 1) &&
             playingAnimation != true) {
-          if(fullVisible[1] != current)
-            {
-              onBottom = true;
-              setCurrent(fullVisible[1]);
-              barScrollToItem(fullVisible[1]);
-            }
-        }
-        else onBottom = false;
-      }
-      else onBottom = false;
-      if(fullVisible.isNotEmpty) {
+          if (fullVisible[1] != current) {
+            onBottom = true;
+            setCurrent(fullVisible[1]);
+            barScrollToItem(fullVisible[1]);
+          }
+        } else
+          onBottom = false;
+      } else
+        onBottom = false;
+      if (fullVisible.isNotEmpty) {
         if (((fullVisible[0] != current) && playingAnimation != true) &&
             onBottom == false) {
           setCurrent(fullVisible[0]);
@@ -115,38 +117,43 @@ class _MenuScreenState extends State<MenuScreen> {
             height: 60,
             child: BlocBuilder<CategoriesListBloc, CategoriesListState>(
               bloc: _categoriesListBloc,
-              builder: (context, state){
-                if(state is CategoriesListLoaded) return
-                ScrollablePositionedList.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemScrollController: barItemController,
-                  separatorBuilder: (context, _) => const SizedBox(width: 16),
-                  itemCount: state.tagsList.length,
-                  itemBuilder: (context, index) =>
-                      Container(
-                        height: 32,
-                        alignment: Alignment.center,
-                        child: TextButton(
-                          onPressed: () => {
-                            setCurrent(index),
-                            scrollToItem(index),
-                            barScrollToItem(index),
-                          },
-                          style: ElevatedButton.styleFrom(
-                            elevation: 10,
-                            alignment: Alignment.center,
-                            backgroundColor: index == current? AppColors.mainColor : AppColors.white,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                          ),
-                          child: Text(
-                            state.tagsList[index].tag,
-                            style: index == current? AppTextStyles.chipActive : AppTextStyles.chip,
-                          ),
+              builder: (context, state) {
+                if (state is CategoriesListLoaded)
+                  return ScrollablePositionedList.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemScrollController: barItemController,
+                    separatorBuilder: (context, _) => const SizedBox(width: 16),
+                    itemCount: state.tagsList.length,
+                    itemBuilder: (context, index) => Container(
+                      height: 32,
+                      alignment: Alignment.center,
+                      child: TextButton(
+                        onPressed: () => {
+                          setCurrent(index),
+                          scrollToItem(index),
+                          barScrollToItem(index),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 10,
+                          alignment: Alignment.center,
+                          backgroundColor: index == current
+                              ? AppColors.mainColor
+                              : AppColors.white,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 10),
+                        ),
+                        child: Text(
+                          state.tagsList[index].tag,
+                          style: index == current
+                              ? AppTextStyles.chipActive
+                              : AppTextStyles.chip,
                         ),
                       ),
-                );
+                    ),
+                  );
                 return const SizedBox();
               },
             ),
@@ -155,8 +162,8 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       body: BlocBuilder<CategoriesListBloc, CategoriesListState>(
         bloc: _categoriesListBloc,
-        builder: (context, state){
-          if(state is CategoriesListLoaded) {
+        builder: (context, state) {
+          if (state is CategoriesListLoaded) {
             listTagsLength = state.tagsList.length;
             return Padding(
               padding: const EdgeInsets.only(left: 16),
@@ -171,7 +178,7 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             );
           }
-          if(state is CategoriesListLoadingFailure) {
+          if (state is CategoriesListLoadingFailure) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +195,9 @@ class _MenuScreenState extends State<MenuScreen> {
                     onPressed: () {
                       _categoriesListBloc.add(LoadCategoriesList());
                     },
-                    child: const Text(AppStrings.retryLoad,),
+                    child: const Text(
+                      AppStrings.retryLoad,
+                    ),
                   ),
                 ],
               ),
@@ -199,42 +208,43 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       floatingActionButton:
           BlocBuilder<SelectedProductsListBloc, SelectedProductsListState>(
-              bloc: _selected_productsListBloc,
-              builder: (context, state){
-                return state.cards.isNotEmpty ? SizedBox(
-                    height: 45,
-                    width: 120,
-                    child: TextButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            elevation: 0,
-                            showDragHandle: true,
-                            backgroundColor: Colors.white,
-                            builder: (context) => const MenuBottomSheet(),
-                          );
-                        },
-                        style: button_style,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Image(
-                              image: AssetImage('lib/src/assets/images/buy_image.png'),
-                              height: 18,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              '${state.counter.toStringAsFixed(2)} ₽',
-                              style: AppTextStyles.price,
-                            ),
-                          ],
+        bloc: _selected_productsListBloc,
+        builder: (context, state) {
+          return state.cards.isNotEmpty
+              ? SizedBox(
+                  height: 45,
+                  width: 120,
+                  child: TextButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        elevation: 0,
+                        showDragHandle: true,
+                        backgroundColor: Colors.white,
+                        builder: (context) => const MenuBottomSheet(),
+                      );
+                    },
+                    style: button_style,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Image(
+                          image:
+                              AssetImage('lib/src/assets/images/buy_image.png'),
+                          height: 18,
                         ),
-
+                        const SizedBox(width: 5),
+                        Text(
+                          '${state.counter.toStringAsFixed(2)} ₽',
+                          style: AppTextStyles.price,
+                        ),
+                      ],
                     ),
-                ) : Container();
-              },
-          ),
+                  ),
+                )
+              : Container();
+        },
+      ),
     );
   }
-
 }

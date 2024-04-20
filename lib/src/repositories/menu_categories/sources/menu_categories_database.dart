@@ -6,8 +6,7 @@ import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:get_it/get_it.dart';
 
-class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository{
-
+class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository {
   final CategoriesDatabase CategoriesDB = GetIt.I<CategoriesDatabase>();
   final ProductsDatabase ProductsDB = GetIt.I<ProductsDatabase>();
 
@@ -27,18 +26,20 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository{
   }
 
   void saveProductsToDB(List<CardModel> cards, int categoryID) async {
-    await (ProductsDB.delete(ProductsDB.productsItems)..where((t) => t.categoryID.equals(categoryID))).go();
+    await (ProductsDB.delete(ProductsDB.productsItems)
+          ..where((t) => t.categoryID.equals(categoryID)))
+        .go();
     cards.forEach((card) async {
       developer.log('saving Product', name: 'DB');
       await ProductsDB.into(ProductsDB.productsItems).insert(
         ProductsItemsCompanion.insert(
-            id: card.id,
-            ico: card.ico,
-            productName: card.name,
-            description: card.description,
-            price: card.price.toString(),
-            priceType: card.priceType,
-            categoryID: categoryID,
+          id: card.id,
+          ico: card.ico,
+          productName: card.name,
+          description: card.description,
+          price: card.price.toString(),
+          priceType: card.priceType,
+          categoryID: categoryID,
         ),
       );
       developer.log('Product saved', name: 'DB');
@@ -49,12 +50,13 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository{
   Future<List<TagModel>> getCategoriesTagsList() async {
     developer.log('start getTags', name: 'DB');
 
-    List<CategoriesItem> dbCategories = await CategoriesDB.select(CategoriesDB.categoriesItems).get();
+    List<CategoriesItem> dbCategories =
+        await CategoriesDB.select(CategoriesDB.categoriesItems).get();
 
     List<TagModel> rawCategories = dbCategories.map((category) {
       return TagModel(
-          id: category.id,
-          tag: category.tag,
+        id: category.id,
+        tag: category.tag,
       );
     }).toList();
     developer.log('return', name: 'DB');
@@ -62,15 +64,17 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository{
   }
 
   @override
-  Future<List<CardModel>> getProductsByCategoryList(int id) async {
-
+  Future<List<CardModel>> getProductsByCategoryList(int id, int page) async {
     developer.log('start get ProductsByCategory', name: 'DB');
 
     /*Future<List<ProductsItem>> getdbProducts() {
     return (ProductsDB.select(ProductsDB.productsItems)..where((p) => p.categoryID.equals(id))).get();
     }*/
 
-    List<ProductsItem> dbProducts = await (ProductsDB.select(ProductsDB.productsItems)..where((p) => p.categoryID.equals(id))).get();
+    List<ProductsItem> dbProducts =
+        await (ProductsDB.select(ProductsDB.productsItems)
+              ..where((p) => p.categoryID.equals(id)))
+            .get();
 
     List<CardModel> productsByCategoryID = dbProducts.map((product) {
       return CardModel(
@@ -91,5 +95,4 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository{
     developer.log('Post Start', name: 'DB');
     return false;
   }
-
 }

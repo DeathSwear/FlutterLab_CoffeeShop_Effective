@@ -12,17 +12,40 @@ class ProductsListBloc extends Bloc<ProductsListEvent, ProductsListState> {
   }
 
   final AbstractMenuCategoriesRepository categoriesRepository;
+  int page = 0;
+  bool stop = false;
 
   Future<void> _load(
-      LoadProductsList event,
-      Emitter<ProductsListState> emit,
-      ) async {
+    LoadProductsList event,
+    Emitter<ProductsListState> emit,
+  ) async {
     try {
-      if (state is! ProductsListLoaded) {
-        emit(ProductsListLoading());
+      if (stop == false) {
+        if (state is ProductsListInitial) {
+          emit(ProductsListLoading());
+          List<CardModel> productsList = await categoriesRepository
+              .getProductsByCategoryList(event.categoryID, page);
+          page++;
+          List<CardModel> productsList2 = [];
+          productsList2.addAll(productsList);
+          emit(ProductsListLoaded(productsList: productsList));
+        } else if (state is ProductsListLoaded) {
+          final currentState = state as ProductsListLoaded;
+          //emit(ProductsListAddLoading(productsList: currentState.productsList));
+          List<CardModel> newProductsList = await categoriesRepository
+              .getProductsByCategoryList(event.categoryID, page);
+          page++;
+          //currentState.productsList.addAll(productsList);
+          //final updatedProductsList = currentState.productsList + productsList;
+          //emit(ProductsListLoaded(productsList: updatedProductsList));
+          List<CardModel> updatedProductsList =
+              List.from(currentState.productsList)..addAll(newProductsList);
+          emit(ProductsListLoaded(productsList: updatedProductsList));
+          if (newProductsList.isEmpty) {
+            stop = true;
+          }
+        }
       }
-      final productsList = await categoriesRepository.getProductsByCategoryList(event.categoryID);
-      emit(ProductsListLoaded(productsList: productsList));
     } catch (e) {
       emit(ProductsListLoadingFailure(exception: e));
     } finally {
