@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_course/src/features/map/view/map_screen.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/strings_data.dart';
@@ -104,6 +105,19 @@ class _MenuScreenState extends State<MenuScreen> {
 
   final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
 
+  Future<void> _navigateAndDisplayMap(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MapScreen()),
+    );
+
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('$result')));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +125,15 @@ class _MenuScreenState extends State<MenuScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
         surfaceTintColor: Colors.transparent,
-        title: PreferredSize(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.map),
+            onPressed: () {
+              _navigateAndDisplayMap(context);
+            },
+          ),
+        ],
+        bottom: PreferredSize(
           preferredSize: const Size.fromHeight((60)),
           child: SizedBox(
             height: 60,
