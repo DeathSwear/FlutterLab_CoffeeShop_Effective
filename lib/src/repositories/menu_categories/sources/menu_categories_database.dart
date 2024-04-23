@@ -4,11 +4,13 @@ import 'package:flutter_course/src/features/menu/models/card_model.dart';
 import 'dart:developer' as developer;
 import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
-import 'package:get_it/get_it.dart';
 
 class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository {
-  final CategoriesDatabase CategoriesDB = GetIt.I<CategoriesDatabase>();
-  final ProductsDatabase ProductsDB = GetIt.I<ProductsDatabase>();
+  //final CategoriesDatabase CategoriesDB = GetIt.I<CategoriesDatabase>();
+  //final ProductsDatabase ProductsDB = GetIt.I<ProductsDatabase>();
+
+  final CategoriesDatabase CategoriesDB = CategoriesDatabase();
+  final ProductsDatabase ProductsDB = ProductsDatabase();
 
   void saveCategoriesToDB(List<TagModel> tags) async {
     await CategoriesDB.delete(CategoriesDB.categoriesItems).go();
@@ -46,6 +48,24 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository {
     });
   }
 
+  void addProductsToDB(List<CardModel> cards, int categoryID) async {
+    cards.forEach((card) async {
+      developer.log('saving Product', name: 'DB');
+      await ProductsDB.into(ProductsDB.productsItems).insert(
+        ProductsItemsCompanion.insert(
+          id: card.id,
+          ico: card.ico,
+          productName: card.name,
+          description: card.description,
+          price: card.price.toString(),
+          priceType: card.priceType,
+          categoryID: categoryID,
+        ),
+      );
+      developer.log('Product saved', name: 'DB');
+    });
+  }
+
   @override
   Future<List<TagModel>> getCategoriesTagsList() async {
     developer.log('start getTags', name: 'DB');
@@ -66,13 +86,14 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository {
   @override
   Future<List<CardModel>> getProductsByCategoryList(int id, int page) async {
     developer.log('start get ProductsByCategory', name: 'DB');
-
+    //if (page > 0) return [];
     /*Future<List<ProductsItem>> getdbProducts() {
     return (ProductsDB.select(ProductsDB.productsItems)..where((p) => p.categoryID.equals(id))).get();
     }*/
 
     List<ProductsItem> dbProducts =
         await (ProductsDB.select(ProductsDB.productsItems)
+              ..limit(6, offset: page * 6)
               ..where((p) => p.categoryID.equals(id)))
             .get();
 

@@ -36,6 +36,8 @@ class _MapScreenState extends State<MapScreen> {
     return true;
   }
 
+  //в блоке при смене стейта проверку бахнуть на это, если 0 то бахнуть функцию перемещения
+  //на первый (либо сохраненный) элемент.
   Future<bool> _checkPermossion() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;

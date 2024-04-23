@@ -42,7 +42,10 @@ class MenuCategoriesRepository implements AbstractMenuCategoriesRepository {
     try {
       productsByCategoryID =
           await MenuCategories_API.getProductsByCategoryList(id, page);
-      MenuCategories_DB.saveProductsToDB(productsByCategoryID, id);
+      if (page == 0)
+        MenuCategories_DB.saveProductsToDB(productsByCategoryID, id);
+      else
+        MenuCategories_DB.addProductsToDB(productsByCategoryID, id);
     } catch (e) {
       developer.log('get products error', name: 'REPO');
       productsByCategoryID =
