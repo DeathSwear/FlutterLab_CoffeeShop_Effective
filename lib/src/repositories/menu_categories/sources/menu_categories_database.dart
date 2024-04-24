@@ -97,6 +97,8 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository {
               ..where((p) => p.categoryID.equals(id)))
             .get();
 
+    if (dbProducts.isEmpty) return [];
+
     List<CardModel> productsByCategoryID = dbProducts.map((product) {
       return CardModel(
         id: product.id,

@@ -15,8 +15,7 @@ class MenuBottomSheet extends StatefulWidget {
 }
 
 class _MenuBottomSheetState extends State<MenuBottomSheet> {
-
-  static ButtonStyle trash_button_style  = TextButton.styleFrom(
+  static ButtonStyle trash_button_style = TextButton.styleFrom(
     elevation: 0,
     alignment: Alignment.center,
     backgroundColor: Colors.transparent,
@@ -36,83 +35,81 @@ class _MenuBottomSheetState extends State<MenuBottomSheet> {
 
   final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
 
-
-  Widget test1() {
-    return Text('tetetetetet');
-  }
-
-
   @override
   Widget build(BuildContext context) {
-  return DraggableScrollableSheet(
-    initialChildSize: 1,
-    builder: (_, controller) => Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: [
-           Padding(
+    return DraggableScrollableSheet(
+      initialChildSize: 1,
+      builder: (_, controller) => Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          children: [
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      AppStrings.bottomsheetTitle,
-                        style: AppTextStyles.bottomsheetTitle,
-                    ),
-                    SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: TextButton(
-                        onPressed: () {
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    AppStrings.bottomsheetTitle,
+                    style: AppTextStyles.bottomsheetTitle,
+                  ),
+                  SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: TextButton(
+                      onPressed: () {
                         _selected_productsListBloc.add(ClearCategoriesList());
                         Navigator.pop(context);
-                        },
-                        style: trash_button_style,
-                        child: const Image(
-                            image: AssetImage('lib/src/assets/images/trash_image.png'),
-                            height: 18,
-                          ),
+                      },
+                      style: trash_button_style,
+                      child: const Image(
+                        image:
+                            AssetImage('lib/src/assets/images/trash_image.png'),
+                        height: 18,
                       ),
                     ),
-                    test1(),
-                  ],
+                  ),
+                ],
               ),
-          ),
-          const Divider(),
-          Expanded(
-            child: BlocBuilder<SelectedProductsListBloc, SelectedProductsListState>(
-              bloc: _selected_productsListBloc,
-              builder: (context, state){
-                return state.cards.isNotEmpty ? ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) => SelectedProduct(data: state.cards[index]),
-                    itemCount: state.cards.length,
-                  ) : const SizedBox();
-              },
             ),
-          ),
-          const SizedBox(height: 6),
-          SizedBox(
-            height: 56,
-            width: double.infinity,
-            child: ElevatedButton(
+            const Divider(),
+            Expanded(
+              child: BlocBuilder<SelectedProductsListBloc,
+                  SelectedProductsListState>(
+                bloc: _selected_productsListBloc,
+                builder: (context, state) {
+                  return state.cards.isNotEmpty
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) =>
+                              SelectedProduct(data: state.cards[index]),
+                          itemCount: state.cards.length,
+                        )
+                      : const SizedBox();
+                },
+              ),
+            ),
+            const SizedBox(height: 6),
+            SizedBox(
+              height: 56,
+              width: double.infinity,
+              child: ElevatedButton(
                 onPressed: () {
-                  _selected_productsListBloc.add(PostCategoriesList(context: context));
+                  _selected_productsListBloc
+                      .add(PostCategoriesList(context: context));
                 },
                 style: button_style,
                 child: const Text(
                   AppStrings.bottomsheetMakeAnOrder,
                   style: AppTextStyles.bottomsheetMakeAnOrder,
                 ),
+              ),
             ),
-          ),
-          const SizedBox(height: 6),
-        ],
+            const SizedBox(height: 6),
+          ],
+        ),
       ),
-      ),
-  );
+    );
   }
-
 }

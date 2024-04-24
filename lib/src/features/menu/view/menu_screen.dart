@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_course/src/features/map/bloc/locations_list_bloc.dart';
 import 'package:flutter_course/src/features/map/view/map_screen.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
@@ -65,6 +66,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
+    locationsBloc.add(LoadLocationsList());
     _categoriesListBloc.add(LoadCategoriesList());
 
     //getTags();
@@ -105,18 +107,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
 
-  Future<void> _navigateAndDisplayMap(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MapScreen()),
-    );
-
-    if (!context.mounted) return;
-
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('$result')));
-  }
+  final locationsBloc = GetIt.I<LocationsListBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -125,14 +116,39 @@ class _MenuScreenState extends State<MenuScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
         surfaceTintColor: Colors.transparent,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.map),
-            onPressed: () {
-              _navigateAndDisplayMap(context);
-            },
-          ),
-        ],
+        title: BlocBuilder<LocationsListBloc, LocationsListState>(
+            bloc: locationsBloc,
+            builder: (context, state) {
+              if (state is LocationsListLoaded)
+                return TextButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MapScreen()),
+                  ),
+                  child: SizedBox(
+                    height: 60,
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_outlined,
+                          color: AppColors.mainColor,
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          locationsBloc.selectedLocation.name,
+                          style: AppTextStyles.currentLocation,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              else
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+            }),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight((60)),
           child: SizedBox(
@@ -163,9 +179,12 @@ class _MenuScreenState extends State<MenuScreen> {
                               : AppColors.white,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           padding: const EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 10),
+                            vertical: 0,
+                            horizontal: 10,
+                          ),
                         ),
                         child: Text(
                           state.tagsList[index].tag,
