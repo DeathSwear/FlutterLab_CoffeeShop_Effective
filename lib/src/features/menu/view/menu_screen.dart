@@ -4,6 +4,7 @@ import 'package:flutter_course/src/features/map/bloc/locations_list_bloc.dart';
 import 'package:flutter_course/src/features/map/view/map_screen.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
+import 'package:flutter_course/src/features/menu/data/button_styles.dart';
 import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/bottom_sheet.dart';
@@ -16,19 +17,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
   @override
-  _MenuScreenState createState() => _MenuScreenState();
+  MenuScreenState createState() => MenuScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
-  static ButtonStyle button_style = ElevatedButton.styleFrom(
-    elevation: 0,
-    alignment: Alignment.center,
-    backgroundColor: AppColors.mainColor,
-    foregroundColor: Colors.white,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    padding: EdgeInsets.zero,
-  );
-
+class MenuScreenState extends State<MenuScreen> {
   final itemListener = ItemPositionsListener.create();
 
   bool playingAnimation = false;
@@ -46,7 +38,7 @@ class _MenuScreenState extends State<MenuScreen> {
       index: ind,
       duration: const Duration(milliseconds: 200),
     );
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200), () => {});
     playingAnimation = false;
   }
 
@@ -105,7 +97,7 @@ class _MenuScreenState extends State<MenuScreen> {
     });
   }
 
-  final _selected_productsListBloc = GetIt.I<SelectedProductsListBloc>();
+  final _selectedProductsListBloc = GetIt.I<SelectedProductsListBloc>();
 
   final locationsBloc = GetIt.I<LocationsListBloc>();
 
@@ -117,38 +109,39 @@ class _MenuScreenState extends State<MenuScreen> {
         backgroundColor: AppColors.backgroundColor,
         surfaceTintColor: Colors.transparent,
         title: BlocBuilder<LocationsListBloc, LocationsListState>(
-            bloc: locationsBloc,
-            builder: (context, state) {
-              if (state is LocationsListLoaded)
-                return TextButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MapScreen()),
+          bloc: locationsBloc,
+          builder: (context, state) {
+            if (state is LocationsListLoaded)
+              return TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MapScreen()),
+                ),
+                child: SizedBox(
+                  height: 60,
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        color: AppColors.mainColor,
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        locationsBloc.selectedLocation.name,
+                        style: AppTextStyles.currentLocation,
+                      ),
+                    ],
                   ),
-                  child: SizedBox(
-                    height: 60,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_outlined,
-                          color: AppColors.mainColor,
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          locationsBloc.selectedLocation.name,
-                          style: AppTextStyles.currentLocation,
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              else
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-            }),
+                ),
+              );
+            else
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+          },
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight((60)),
           child: SizedBox(
@@ -234,6 +227,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   const SizedBox(height: 30),
                   TextButton(
                     onPressed: () {
+                      locationsBloc.add(LoadLocationsList());
                       _categoriesListBloc.add(LoadCategoriesList());
                     },
                     child: const Text(
@@ -249,7 +243,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       floatingActionButton:
           BlocBuilder<SelectedProductsListBloc, SelectedProductsListState>(
-        bloc: _selected_productsListBloc,
+        bloc: _selectedProductsListBloc,
         builder: (context, state) {
           return state.cards.isNotEmpty
               ? SizedBox(
@@ -265,7 +259,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         builder: (context) => const MenuBottomSheet(),
                       );
                     },
-                    style: button_style,
+                    style: AppButtonStyles.buttonStyle,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

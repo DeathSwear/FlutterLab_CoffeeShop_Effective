@@ -6,7 +6,7 @@ import 'package:flutter_course/src/features/map/models/latlong_location.dart';
 import 'package:flutter_course/src/features/map/models/named_location.dart';
 import 'package:flutter_course/src/features/map/view/map_list_screen.dart';
 import 'package:flutter_course/src/features/map/view/widgets/modal_sheet_view.dart';
-import 'package:flutter_course/src/repositories/map_locations/abstract_map_locations.dart';
+import 'package:flutter_course/src/features/menu/data/button_styles.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -19,16 +19,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  static ButtonStyle button_style = ElevatedButton.styleFrom(
-    elevation: 0,
-    alignment: Alignment.center,
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.white,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-    padding: EdgeInsets.zero,
-  );
-
-  static BoxDecoration boxDecoration_style = BoxDecoration(
+  static BoxDecoration boxDecorationStyle = BoxDecoration(
     borderRadius: BorderRadius.circular(20),
     boxShadow: [
       BoxShadow(
@@ -46,19 +37,19 @@ class _MapScreenState extends State<MapScreen> {
   bool havePermissions = false;
 
   Future<bool> _checkAndAskPermossion() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return false;
       }
     }
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return false;
       }
     }
@@ -67,12 +58,14 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _start() async {
-    LocationData _locationData;
+    LocationData locationData;
     if (!await _checkAndAskPermossion()) return;
-    _locationData = await location.getLocation();
-    LatLongLocation _userLocation = LatLongLocation(
-        lat: _locationData.latitude ?? 0, long: _locationData.longitude ?? 0);
-    _moveToCurrentLocation(_userLocation);
+    locationData = await location.getLocation();
+    LatLongLocation userLocation = LatLongLocation(
+      lat: locationData.latitude ?? 0,
+      long: locationData.longitude ?? 0,
+    );
+    _moveToCurrentLocation(userLocation);
   }
 
   Future<void> _moveToCurrentLocation(
@@ -92,24 +85,10 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  /*Future<void> openBottomSheetAndGetPos(
-      BuildContext context, NamedLocation p) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ModalSheetView(
-                point: p,
-              )),
-    );
-
-    if (!context.mounted) return;
-
-    Navigator.pop(context, result);
-  }*/
-
-  /// Метод для генерации объектов маркеров для отображения на карте
   List<PlacemarkMapObject> _getPlacemarkObjects(
-      BuildContext context, List<NamedLocation> locations) {
+    BuildContext context,
+    List<NamedLocation> locations,
+  ) {
     List<PlacemarkMapObject> mapPoints = locations
         .map(
           (point) => PlacemarkMapObject(
@@ -125,10 +104,11 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             onTap: (_, __) => showModalBottomSheet(
-                context: context,
-                builder: (context) => ModalSheetView(
-                      point: point,
-                    )),
+              context: context,
+              builder: (context) => ModalSheetView(
+                point: point,
+              ),
+            ),
           ),
         )
         .toList();
@@ -136,13 +116,11 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   final locationsBloc = GetIt.I<LocationsListBloc>();
-  //LocationsListBloc(GetIt.I<AbstractMapLocationsRepository>());
 
   @override
   void initState() {
     super.initState();
     _start().ignore();
-    //locationsBloc.add(LoadLocationsList());
   }
 
   @override
@@ -155,8 +133,8 @@ class _MapScreenState extends State<MapScreen> {
             if (!havePermissions) {
               _moveToCurrentLocation(
                 LatLongLocation(
-                  lat: state.locationsList[0].lat,
-                  long: state.locationsList[0].long,
+                  lat: locationsBloc.selectedLocation.lat,
+                  long: locationsBloc.selectedLocation.long,
                 ),
               );
             }
@@ -181,10 +159,10 @@ class _MapScreenState extends State<MapScreen> {
             Container(
               height: 48,
               width: 48,
-              decoration: boxDecoration_style,
+              decoration: boxDecorationStyle,
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                style: button_style,
+                style: AppButtonStyles.mapActionButtonStyle,
                 child: const Icon(
                   Icons.arrow_back,
                   color: Colors.black,
@@ -194,14 +172,15 @@ class _MapScreenState extends State<MapScreen> {
             Container(
               height: 48,
               width: 48,
-              decoration: boxDecoration_style,
+              decoration: boxDecorationStyle,
               child: ElevatedButton(
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const MapListScreen()),
+                    builder: (context) => const MapListScreen(),
+                  ),
                 ),
-                style: button_style,
+                style: AppButtonStyles.mapActionButtonStyle,
                 child: const Icon(
                   Icons.map_outlined,
                   color: Colors.black,

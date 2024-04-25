@@ -14,10 +14,10 @@ class Category extends StatefulWidget {
 
   final TagModel data;
   @override
-  _CategoryState createState() => _CategoryState();
+  CategoryState createState() => CategoryState();
 }
 
-class _CategoryState extends State<Category> {
+class CategoryState extends State<Category> {
   final _productsListBloc =
       ProductsListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
   final ScrollController _scrollController = ScrollController();

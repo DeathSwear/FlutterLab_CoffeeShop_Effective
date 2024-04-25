@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/map/bloc/locations_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
-import 'package:flutter_course/src/repositories/map_locations/abstract_map_locations.dart';
 import 'package:get_it/get_it.dart';
 
 class MapListScreen extends StatefulWidget {
@@ -16,7 +14,6 @@ class MapListScreen extends StatefulWidget {
 
 class _MapListScreenState extends State<MapListScreen> {
   final locationsBloc = GetIt.I<LocationsListBloc>();
-  //LocationsListBloc(GetIt.I<AbstractMapLocationsRepository>());
 
   @override
   void initState() {
@@ -45,10 +42,11 @@ class _MapListScreenState extends State<MapListScreen> {
                   size: 20,
                 ),
                 onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                   locationsBloc.add(
-                      SelectLocation(location: state.locationsList[index]));
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                    SelectLocation(location: state.locationsList[index]),
+                  );
                 },
               ),
               itemCount: state.locationsList.length,

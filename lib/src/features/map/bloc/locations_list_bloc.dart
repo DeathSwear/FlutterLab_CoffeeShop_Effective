@@ -3,6 +3,8 @@ import 'package:flutter_course/src/features/map/models/named_location.dart';
 import 'package:flutter_course/src/repositories/map_locations/abstract_map_locations.dart';
 import 'dart:async';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 part 'locations_list_event.dart';
 part 'locations_list_state.dart';
 
@@ -21,25 +23,35 @@ class LocationsListBloc extends Bloc<LocationsListEvent, LocationsListState> {
     LoadLocationsList event,
     Emitter<LocationsListState> emit,
   ) async {
-    try {
-      if (state is! LocationsListLoaded) {
+    if (state is! LocationsListLoaded) {
+      try {
         emit(LocationsListLoading());
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        locationsList = await mapLocationsRepository.getLocations();
+        String savedLocation = prefs.getString('UserLocation') ?? 'none';
+        NamedLocation newSelectedLocation = locationsList.firstWhere(
+          (element) => element.name == savedLocation,
+          orElse: () => locationsList[0],
+        );
+        selectedLocation = newSelectedLocation;
+        emit(LocationsListLoaded(locationsList: locationsList));
+      } catch (e) {
+        emit(LocationsListLoadingFailure(exception: e));
       }
-      locationsList = await mapLocationsRepository.getLocations();
-      emit(LocationsListLoaded(locationsList: locationsList));
-    } catch (e) {
-      emit(LocationsListLoadingFailure(exception: e));
     }
   }
 
   NamedLocation selectedLocation =
-      NamedLocation(name: 'Не выбрано', lat: 0, long: 0);
+      const NamedLocation(name: 'Не выбрано', lat: 0, long: 0);
 
   Future<void> _select(
     SelectLocation event,
     Emitter<LocationsListState> emit,
   ) async {
     if (state is LocationsListLoaded) {
+      emit(LocationsListLoading());
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('UserLocation', event.location.name);
       selectedLocation = event.location;
       emit(LocationsListLoaded(locationsList: locationsList));
     }
