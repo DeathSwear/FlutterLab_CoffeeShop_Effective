@@ -31,13 +31,9 @@ class ProductsListBloc extends Bloc<ProductsListEvent, ProductsListState> {
           emit(ProductsListLoaded(productsList: productsList));
         } else if (state is ProductsListLoaded) {
           final currentState = state as ProductsListLoaded;
-          //emit(ProductsListAddLoading(productsList: currentState.productsList));
           List<CardModel> newProductsList = await categoriesRepository
               .getProductsByCategoryList(event.categoryID, page);
           page++;
-          //currentState.productsList.addAll(productsList);
-          //final updatedProductsList = currentState.productsList + productsList;
-          //emit(ProductsListLoaded(productsList: updatedProductsList));
           List<CardModel> updatedProductsList =
               List.from(currentState.productsList)..addAll(newProductsList);
           emit(ProductsListLoaded(productsList: updatedProductsList));

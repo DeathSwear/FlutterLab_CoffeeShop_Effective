@@ -8,3 +8,8 @@ class SelectLocation extends LocationsListEvent {
   SelectLocation({required this.location});
   final NamedLocation location;
 }
+
+class GetPermissions extends LocationsListEvent {
+  GetPermissions({required this.move});
+  final Future<void> Function(LatLongLocation) move;
+}

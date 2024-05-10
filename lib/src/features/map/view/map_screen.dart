@@ -5,10 +5,9 @@ import 'package:flutter_course/src/features/map/bloc/locations_list_bloc.dart';
 import 'package:flutter_course/src/features/map/models/latlong_location.dart';
 import 'package:flutter_course/src/features/map/models/named_location.dart';
 import 'package:flutter_course/src/features/map/view/map_list_screen.dart';
-import 'package:flutter_course/src/features/map/view/widgets/modal_sheet_view.dart';
+import 'package:flutter_course/src/features/map/view/widgets/map_object.dart';
 import 'package:flutter_course/src/features/menu/data/button_styles.dart';
 import 'package:get_it/get_it.dart';
-import 'package:location/location.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class MapScreen extends StatefulWidget {
@@ -32,41 +31,6 @@ class _MapScreenState extends State<MapScreen> {
   );
 
   final mapControllerCompleter = Completer<YandexMapController>();
-  final Location location = Location();
-
-  bool havePermissions = false;
-
-  Future<bool> _checkAndAskPermossion() async {
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return false;
-      }
-    }
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return false;
-      }
-    }
-    havePermissions = true;
-    return true;
-  }
-
-  Future<void> _start() async {
-    LocationData locationData;
-    if (!await _checkAndAskPermossion()) return;
-    locationData = await location.getLocation();
-    LatLongLocation userLocation = LatLongLocation(
-      lat: locationData.latitude ?? 0,
-      long: locationData.longitude ?? 0,
-    );
-    _moveToCurrentLocation(userLocation);
-  }
 
   Future<void> _moveToCurrentLocation(
     LatLongLocation appLatLong,
@@ -79,7 +43,7 @@ class _MapScreenState extends State<MapScreen> {
             latitude: appLatLong.lat,
             longitude: appLatLong.long,
           ),
-          zoom: 22,
+          zoom: 16,
         ),
       ),
     );
@@ -91,25 +55,8 @@ class _MapScreenState extends State<MapScreen> {
   ) {
     List<PlacemarkMapObject> mapPoints = locations
         .map(
-          (point) => PlacemarkMapObject(
-            mapId: MapObjectId('MapObject ${point.name}'),
-            point: Point(latitude: point.lat, longitude: point.long),
-            opacity: 1,
-            icon: PlacemarkIcon.single(
-              PlacemarkIconStyle(
-                image: BitmapDescriptor.fromAssetImage(
-                  'lib/src/assets/images/point.png',
-                ),
-                scale: 2,
-              ),
-            ),
-            onTap: (_, __) => showModalBottomSheet(
-              context: context,
-              builder: (context) => ModalSheetView(
-                point: point,
-              ),
-            ),
-          ),
+          (point) =>
+              AppMapObject(point: point, context: context).getPlacemarkObject(),
         )
         .toList();
     return mapPoints;
@@ -120,7 +67,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _start().ignore();
+    locationsBloc.add(GetPermissions(move: _moveToCurrentLocation));
   }
 
   @override
@@ -129,26 +76,14 @@ class _MapScreenState extends State<MapScreen> {
       body: BlocBuilder<LocationsListBloc, LocationsListState>(
         bloc: locationsBloc,
         builder: (context, state) {
-          if (state is LocationsListLoaded) {
-            if (!havePermissions) {
-              _moveToCurrentLocation(
-                LatLongLocation(
-                  lat: locationsBloc.selectedLocation.lat,
-                  long: locationsBloc.selectedLocation.long,
-                ),
-              );
-            }
-            return YandexMap(
-              onMapCreated: (controller) {
-                mapControllerCompleter.complete(controller);
-              },
-              mapObjects: _getPlacemarkObjects(context, state.locationsList),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+          return YandexMap(
+            onMapCreated: (controller) {
+              mapControllerCompleter.complete(controller);
+            },
+            mapObjects: state is LocationsListLoaded
+                ? _getPlacemarkObjects(context, state.locationsList)
+                : [],
+          );
         },
       ),
       floatingActionButton: Padding(
