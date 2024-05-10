@@ -11,16 +11,20 @@ import 'package:flutter_course/src/theme/app_colors.dart';
 part 'selected_products_list_event.dart';
 part 'selected_products_list_state.dart';
 
-
-class SelectedProductsListBloc extends Bloc<SelectedProductsListEvent, SelectedProductsListState> {
-  SelectedProductsListBloc(this.categoriesRepository) : super(SelectedProductsListState([], 0)) {
+class SelectedProductsListBloc
+    extends Bloc<SelectedProductsListEvent, SelectedProductsListState> {
+  SelectedProductsListBloc(this.categoriesRepository)
+      : super(SelectedProductsListState([], 0)) {
     on<PostCategoriesList>(_post);
     on<AddToCategoriesList>(_add);
     on<ClearCategoriesList>(_clear);
     on<RemoveFromCategoriesList>(_remove);
   }
 
-  void _add(AddToCategoriesList event, Emitter<SelectedProductsListState> emit) {
+  void _add(
+    AddToCategoriesList event,
+    Emitter<SelectedProductsListState> emit,
+  ) {
     final newState = state.copyWith(
       cards: List.of(state.cards)..add(event.card),
       counter: state.counter + event.card.price,
@@ -29,11 +33,17 @@ class SelectedProductsListBloc extends Bloc<SelectedProductsListEvent, SelectedP
     debugPrint(newState.toString());
   }
 
-  void _clear(ClearCategoriesList event, Emitter<SelectedProductsListState> emit) {
+  void _clear(
+    ClearCategoriesList event,
+    Emitter<SelectedProductsListState> emit,
+  ) {
     emit(SelectedProductsListState([], 0));
   }
 
-  void _remove(RemoveFromCategoriesList event, Emitter<SelectedProductsListState> emit) {
+  void _remove(
+    RemoveFromCategoriesList event,
+    Emitter<SelectedProductsListState> emit,
+  ) {
     final newState = state.copyWith(
       cards: List.of(state.cards)..remove(event.card),
       counter: state.counter - event.card.price,
@@ -44,31 +54,33 @@ class SelectedProductsListBloc extends Bloc<SelectedProductsListEvent, SelectedP
 
   final AbstractMenuCategoriesRepository categoriesRepository;
 
-  Future<void> _post(PostCategoriesList event, Emitter<SelectedProductsListState> emit) async {
+  Future<void> _post(
+    PostCategoriesList event,
+    Emitter<SelectedProductsListState> emit,
+  ) async {
     final postResult = await categoriesRepository.postProductsList(state.cards);
-    if(postResult)
+    if (postResult)
       ScaffoldMessenger.of(event.context).showSnackBar(
         const SnackBar(
-            duration: Duration(seconds: 2),
-            backgroundColor: AppColors.snackBarColor,
-            content: Text(
-              AppStrings.snackBarSucsessful,
-              style: AppTextStyles.snackBarText,
-            )
+          duration: Duration(seconds: 2),
+          backgroundColor: AppColors.snackBarColor,
+          content: Text(
+            AppStrings.snackBarSucsessful,
+            style: AppTextStyles.snackBarText,
+          ),
         ),
       );
     else
       ScaffoldMessenger.of(event.context).showSnackBar(
         const SnackBar(
-            duration: Duration(seconds: 2),
-            backgroundColor: AppColors.snackBarColor,
-            content: Text(
-              AppStrings.snackBarError,
-              style: AppTextStyles.snackBarText,
-            )
+          duration: Duration(seconds: 2),
+          backgroundColor: AppColors.snackBarColor,
+          content: Text(
+            AppStrings.snackBarError,
+            style: AppTextStyles.snackBarText,
+          ),
         ),
       );
     Navigator.pop(event.context);
   }
 }
-

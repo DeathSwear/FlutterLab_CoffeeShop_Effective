@@ -1,16 +1,22 @@
 part of 'products_list_bloc.dart';
 
-class ProductsListState  {}
+class ProductsListState {}
 
 class ProductsListInitial extends ProductsListState {}
 
 class ProductsListLoading extends ProductsListState {}
 
+class ProductsListAddLoading extends ProductsListState {
+  ProductsListAddLoading({
+    required this.productsList,
+  });
+  final List<CardModel> productsList;
+}
+
 class ProductsListLoaded extends ProductsListState {
   ProductsListLoaded({
     required this.productsList,
   });
-
   final List<CardModel> productsList;
 }
 

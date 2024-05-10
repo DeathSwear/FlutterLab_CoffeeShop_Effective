@@ -7,4 +7,6 @@ class AppStrings {
   static const String willRetryWrong = 'Попробуйте позже';
   static const String retryLoad = 'Перезагрузить';
 
+  static const String bottomsheetConfirm = 'Выбрать';
+  static const String modalLocationsTitle = 'Наши кофейни';
 }

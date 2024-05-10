@@ -16,13 +16,13 @@ class AppTextStyles {
     color: Colors.white,
     fontSize: 12,
     fontWeight: FontWeight.w700,
-    letterSpacing: 0.4
+    letterSpacing: 0.4,
   );
   static const priceChange = TextStyle(
-      color: Colors.white,
-      fontSize: 17,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 0.4
+    color: Colors.white,
+    fontSize: 17,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.4,
   );
   static const chipActive = TextStyle(
     color: Colors.white,
@@ -30,9 +30,9 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
   static const chip = TextStyle(
-      color: Colors.black,
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
+    color: Colors.black,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
   );
   static const bottomsheetTitle = TextStyle(
     color: Colors.black,
@@ -52,15 +52,36 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static const bottomsheetMakeAnOrder = TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.4
+    color: Colors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.4,
   );
   static const snackBarText = TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.25
+    color: Colors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.25,
+  );
+
+  static const modalLocationsTitle = TextStyle(
+    color: Colors.black,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.25,
+  );
+
+  static const modalBSLocationsTitle = TextStyle(
+    color: Colors.black,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.25,
+  );
+
+  static const currentLocation = TextStyle(
+    color: Colors.black,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.25,
   );
 }
