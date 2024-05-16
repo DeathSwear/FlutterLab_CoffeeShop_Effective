@@ -1,9 +1,11 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
 import 'dart:developer' as developer;
 import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
+import 'package:flutter_course/src/repositories/messaging/firebase_api.dart';
+import 'package:get_it/get_it.dart';
 
 class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
   MenuCategoriesAPI({
@@ -70,9 +72,10 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
   @override
   Future<bool> postProductsList(List<CardModel> cards) async {
     developer.log('Post Start', name: 'API');
+    FirebaseAPI fapi = GetIt.I<FirebaseAPI>();
     Map<String, dynamic> requestBody = {
       'positions': {},
-      'token': '',
+      'token': fapi.fCMToken,
     };
 
     Map<String, int> cardCountMap = {};
@@ -89,13 +92,13 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
     }
     try {
       Response<dynamic> response = await dio.post(
-        'https://coffeeshop.academy.effective.band/api/v1/orders/',
-        data: jsonEncode(requestBody),
-        options: Options(
-          contentType: 'application/json',
-        ),
+        'https://coffeeshop.academy.effective.band/api/v1/orders',
+        data: requestBody,
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
+        SelectedProductsListBloc selectedProductsListBloc =
+            GetIt.I<SelectedProductsListBloc>();
+        selectedProductsListBloc.add(ClearCategoriesList());
         return true;
       } else {
         return false;

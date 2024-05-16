@@ -60,9 +60,6 @@ class MenuScreenState extends State<MenuScreen> {
     super.initState();
     locationsBloc.add(LoadLocationsList());
     _categoriesListBloc.add(LoadCategoriesList());
-
-    //getTags();
-
     itemListener.itemPositions.addListener(() {
       final fullVisible = itemListener.itemPositions.value
           .where((item) {
@@ -92,8 +89,6 @@ class MenuScreenState extends State<MenuScreen> {
           barScrollToItem(fullVisible[0]);
         }
       }
-      //developer.log('(итого): $fullVisible', name: 'top-bot');
-      //developer.log('curr: $current', name: 'curr');
     });
   }
 
