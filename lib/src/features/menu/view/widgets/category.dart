@@ -8,8 +8,6 @@ import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:get_it/get_it.dart';
 
-import 'dart:developer' as developer;
-
 class Category extends StatefulWidget {
   const Category({super.key, required this.data});
 
@@ -32,7 +30,6 @@ class CategoryState extends State<Category> {
   void _onScroll() {
     if (_scrollController.position.maxScrollExtent ==
         _scrollController.position.pixels) {
-      developer.log('EndScroll, LoadProductsList', name: 'CAT WIDGET');
       _productsListBloc.add(LoadProductsList(categoryID: widget.data.id));
     }
   }

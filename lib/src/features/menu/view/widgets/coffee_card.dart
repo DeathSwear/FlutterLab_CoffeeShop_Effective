@@ -17,9 +17,7 @@ class CoffeeCard extends StatefulWidget {
 }
 
 class CoffeeCardState extends State<CoffeeCard> {
-  final _selectedProductsListBloc = GetIt.I<
-      SelectedProductsListBloc>(); //= SelectedProductsListBloc(GetIt.I<AbstractMenuCategoriesAPI>());
-
+  final _selectedProductsListBloc = GetIt.I<SelectedProductsListBloc>();
   int _counter = 0;
 
   void _incrementCounter() {

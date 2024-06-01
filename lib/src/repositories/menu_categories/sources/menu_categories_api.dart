@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
-import 'dart:developer' as developer;
 import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:flutter_course/src/repositories/messaging/firebase_api.dart';
@@ -15,7 +14,6 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
   final Dio dio;
   @override
   Future<List<TagModel>> getCategoriesTagsList() async {
-    developer.log('start getTags', name: 'API');
     Response<dynamic> categoriesResponse;
     List<TagModel> rawCategories = [];
     try {
@@ -31,17 +29,14 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
           ),
         ),
       );
-      developer.log('category return', name: 'API');
       return rawCategories;
     } catch (e) {
-      developer.log('category error, rethrow', name: 'API');
       rethrow;
     }
   }
 
   @override
   Future<List<CardModel>> getProductsByCategoryList(int id, page) async {
-    developer.log('start get ProductsByCategory', name: 'API');
     final localeType = ui.window.locale;
     Response<dynamic> productsResponse;
     List<CardModel> productsByCategoryID = [];
@@ -64,17 +59,14 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
           ),
         ),
       );
-      developer.log('getProductsByCategory return', name: 'API');
       return productsByCategoryID;
     } catch (e) {
-      developer.log('product error, rethrow', name: 'API');
       rethrow;
     }
   }
 
   @override
   Future<bool> postProductsList(List<CardModel> cards) async {
-    developer.log('Post Start', name: 'API');
     FirebaseAPI fapi = GetIt.I<FirebaseAPI>();
     Map<String, dynamic> requestBody = {
       'positions': {},
