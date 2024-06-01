@@ -14,6 +14,18 @@ class MenuCategoriesDataBase implements AbstractMenuCategoriesRepository {
 
   void saveCategoriesToDB(List<TagModel> tags) async {
     await CategoriesDB.delete(CategoriesDB.categoriesItems).go();
+    //в такой вид изменить после тестов
+    /*for (TagModel tag in tags) {
+      developer.log('saving Category', name: 'DB');
+      //await CategoriesDB.update(CategoriesDB.categoriesItems).write(
+      await CategoriesDB.into(CategoriesDB.categoriesItems).insert(
+        CategoriesItemsCompanion.insert(
+          id: tag.id,
+          tag: tag.tag,
+        ),
+      );
+      developer.log('Category saved', name: 'DB');
+    }*/
     tags.forEach((tag) async {
       developer.log('saving Category', name: 'DB');
       //await CategoriesDB.update(CategoriesDB.categoriesItems).write(

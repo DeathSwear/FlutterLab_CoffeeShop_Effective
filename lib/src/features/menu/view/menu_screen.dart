@@ -13,6 +13,7 @@ import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'dart:ui' as ui;
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -22,7 +23,6 @@ class MenuScreen extends StatefulWidget {
 
 class MenuScreenState extends State<MenuScreen> {
   final itemListener = ItemPositionsListener.create();
-
   bool playingAnimation = false;
   int current = 0;
   void setCurrent(int newCurrent) {
@@ -265,7 +265,7 @@ class MenuScreenState extends State<MenuScreen> {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          '${state.counter.toStringAsFixed(2)} ₽',
+                          '${state.counter.toStringAsFixed(2)} ${ui.window.locale == 'ru' ? '₽' : 'USD'}',
                           style: AppTextStyles.price,
                         ),
                       ],

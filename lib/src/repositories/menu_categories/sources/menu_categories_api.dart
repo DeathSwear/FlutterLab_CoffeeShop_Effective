@@ -6,13 +6,13 @@ import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:flutter_course/src/repositories/messaging/firebase_api.dart';
 import 'package:get_it/get_it.dart';
+import 'dart:ui' as ui;
 
 class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
   MenuCategoriesAPI({
     required this.dio,
   });
   final Dio dio;
-
   @override
   Future<List<TagModel>> getCategoriesTagsList() async {
     developer.log('start getTags', name: 'API');
@@ -42,6 +42,8 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
   @override
   Future<List<CardModel>> getProductsByCategoryList(int id, page) async {
     developer.log('start get ProductsByCategory', name: 'API');
+    //final localeType = Intl.getCurrentLocale();
+    final localeType = ui.window.locale;
     Response<dynamic> productsResponse;
     List<CardModel> productsByCategoryID = [];
     try {
@@ -56,8 +58,10 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
             ico: value['imageUrl'].toString(),
             name: value['name'].toString(),
             description: value['description'].toString(),
-            price: double.parse(value['prices'][0]['value'].toString()),
-            priceType: '₽',
+            price: localeType.languageCode == 'ru'
+                ? double.parse(value['prices'][0]['value'].toString())
+                : double.parse(value['prices'][1]['value'].toString()),
+            priceType: localeType.languageCode == 'ru' ? '₽' : 'USD',
           ),
         ),
       );

@@ -29,7 +29,7 @@ class _MapScreenState extends State<MapScreen> {
       ),
     ],
   );
-
+  late final YandexMapController _mapController;
   final mapControllerCompleter = Completer<YandexMapController>();
 
   Future<void> _moveToCurrentLocation(
@@ -70,6 +70,45 @@ class _MapScreenState extends State<MapScreen> {
     locationsBloc.add(GetPermissions(move: _moveToCurrentLocation));
   }
 
+  ClusterizedPlacemarkCollection _getClusterizedCollection({
+    required List<PlacemarkMapObject> placemarks,
+  }) {
+    return ClusterizedPlacemarkCollection(
+        mapId: const MapObjectId('clusterized-1'),
+        placemarks: placemarks,
+        radius: 50,
+        minZoom: 15,
+        onClusterAdded: (self, cluster) async {
+          return cluster.copyWith(
+            appearance: cluster.appearance.copyWith(
+              opacity: 1.0,
+              icon: PlacemarkIcon.single(
+                PlacemarkIconStyle(
+                  image: BitmapDescriptor.fromAssetImage(
+                    'lib/src/assets/images/points.png',
+                  ),
+                  scale: 2,
+                ),
+              ),
+            ),
+          );
+        },
+        onClusterTap: (self, cluster) async {
+          await _mapController.moveCamera(
+            animation: const MapAnimation(
+                type: MapAnimationType.linear, duration: 0.3),
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: cluster.placemarks.first.point,
+                zoom: _mapZoom + 1,
+              ),
+            ),
+          );
+        });
+  }
+
+  double _mapZoom = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,12 +116,22 @@ class _MapScreenState extends State<MapScreen> {
         bloc: locationsBloc,
         builder: (context, state) {
           return YandexMap(
+            onCameraPositionChanged: (cameraPosition, _, __) {
+              setState(() {
+                _mapZoom = cameraPosition.zoom;
+              });
+            },
             onMapCreated: (controller) {
               mapControllerCompleter.complete(controller);
+              _mapController = controller;
             },
-            mapObjects: state is LocationsListLoaded
-                ? _getPlacemarkObjects(context, state.locationsList)
-                : [],
+            mapObjects: [
+              _getClusterizedCollection(
+                placemarks: state is LocationsListLoaded
+                    ? _getPlacemarkObjects(context, state.locationsList)
+                    : [],
+              ),
+            ],
           );
         },
       ),
