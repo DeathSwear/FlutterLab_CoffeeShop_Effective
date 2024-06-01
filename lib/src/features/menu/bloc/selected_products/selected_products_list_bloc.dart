@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/models/card_model.dart';
 import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'dart:async';
 
 import 'package:flutter_course/src/theme/app_colors.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 part 'selected_products_list_event.dart';
 part 'selected_products_list_state.dart';
 
@@ -59,28 +58,30 @@ class SelectedProductsListBloc
     Emitter<SelectedProductsListState> emit,
   ) async {
     final postResult = await categoriesRepository.postProductsList(state.cards);
-    if (postResult)
-      ScaffoldMessenger.of(event.context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: AppColors.snackBarColor,
-          content: Text(
-            AppStrings.snackBarSucsessful,
-            style: AppTextStyles.snackBarText,
+    if (event.context.mounted) {
+      if (postResult)
+        ScaffoldMessenger.of(event.context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            backgroundColor: AppColors.snackBarColor,
+            content: Text(
+              AppLocalizations.of(event.context)!.snackBarSucsessful,
+              style: AppTextStyles.snackBarText,
+            ),
           ),
-        ),
-      );
-    else
-      ScaffoldMessenger.of(event.context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: AppColors.snackBarColor,
-          content: Text(
-            AppStrings.snackBarError,
-            style: AppTextStyles.snackBarText,
+        );
+      else
+        ScaffoldMessenger.of(event.context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            backgroundColor: AppColors.snackBarColor,
+            content: Text(
+              AppLocalizations.of(event.context)!.snackBarError,
+              style: AppTextStyles.snackBarText,
+            ),
           ),
-        ),
-      );
-    Navigator.pop(event.context);
+        );
+      Navigator.pop(event.context);
+    }
   }
 }

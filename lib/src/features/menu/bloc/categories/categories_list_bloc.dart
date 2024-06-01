@@ -6,17 +6,19 @@ import 'dart:async';
 part 'categories_list_event.dart';
 part 'categories_list_state.dart';
 
-class CategoriesListBloc extends Bloc<CategoriesListEvent, CategoriesListState> {
-  CategoriesListBloc(this.categoriesRepository) : super(CategoriesListInitial()) {
+class CategoriesListBloc
+    extends Bloc<CategoriesListEvent, CategoriesListState> {
+  CategoriesListBloc(this.categoriesRepository)
+      : super(CategoriesListInitial()) {
     on<LoadCategoriesList>(_load);
   }
 
   final AbstractMenuCategoriesRepository categoriesRepository;
 
   Future<void> _load(
-      LoadCategoriesList event,
-      Emitter<CategoriesListState> emit,
-      ) async {
+    LoadCategoriesList event,
+    Emitter<CategoriesListState> emit,
+  ) async {
     try {
       if (state is! CategoriesListLoaded) {
         emit(CategoriesListLoading());
@@ -25,8 +27,6 @@ class CategoriesListBloc extends Bloc<CategoriesListEvent, CategoriesListState> 
       emit(CategoriesListLoaded(tagsList: tagsList));
     } catch (e) {
       emit(CategoriesListLoadingFailure(exception: e));
-    } finally {
-      event.completer?.complete();
     }
   }
 }

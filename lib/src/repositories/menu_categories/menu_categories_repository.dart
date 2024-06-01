@@ -27,7 +27,7 @@ class MenuCategoriesRepository implements AbstractMenuCategoriesRepository {
     } catch (e) {
       developer.log('category error', name: 'REPO');
       rawCategories = await MenuCategories_DB.getCategoriesTagsList();
-      if (rawCategories.length == 0) return throw Exception('nothing in DB');
+      if (rawCategories.isEmpty) return throw Exception('nothing in DB');
     }
     developer.log('category return ', name: 'REPO');
 

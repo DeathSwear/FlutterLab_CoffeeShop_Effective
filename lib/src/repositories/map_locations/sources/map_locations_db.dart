@@ -25,7 +25,7 @@ class MapLocationsDataBase implements AbstractMapLocationsRepository {
 
   void saveLocations(List<NamedLocation> locationsToSave) async {
     await LocationsDB.delete(LocationsDB.locationsItems).go();
-    locationsToSave.forEach((loc) async {
+    locationsToSave.map((loc) async {
       developer.log('saving Category', name: 'DB');
       await LocationsDB.into(LocationsDB.locationsItems).insert(
         LocationsItemsCompanion.insert(

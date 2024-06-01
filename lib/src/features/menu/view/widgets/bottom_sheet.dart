@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/button_styles.dart';
-import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/selected_product.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuBottomSheet extends StatefulWidget {
   const MenuBottomSheet({super.key});
@@ -32,8 +32,8 @@ class MenuBottomSheetState extends State<MenuBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    AppStrings.bottomsheetTitle,
+                  Text(
+                    AppLocalizations.of(context)!.bottomsheetTitle,
                     style: AppTextStyles.bottomsheetTitle,
                   ),
                   SizedBox(
@@ -82,8 +82,8 @@ class MenuBottomSheetState extends State<MenuBottomSheet> {
                       .add(PostCategoriesList(context: context));
                 },
                 style: AppButtonStyles.buttonStyle,
-                child: const Text(
-                  AppStrings.bottomsheetMakeAnOrder,
+                child: Text(
+                  AppLocalizations.of(context)!.bottomsheetMakeAnOrder,
                   style: AppTextStyles.bottomsheetMakeAnOrder,
                 ),
               ),

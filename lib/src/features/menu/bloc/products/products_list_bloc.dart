@@ -44,8 +44,6 @@ class ProductsListBloc extends Bloc<ProductsListEvent, ProductsListState> {
       }
     } catch (e) {
       emit(ProductsListLoadingFailure(exception: e));
-    } finally {
-      event.completer?.complete();
     }
   }
 }

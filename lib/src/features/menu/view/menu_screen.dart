@@ -5,7 +5,6 @@ import 'package:flutter_course/src/features/map/view/map_screen.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/button_styles.dart';
-import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/bottom_sheet.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_course/src/repositories/menu_categories/abstract_categor
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -213,11 +213,11 @@ class MenuScreenState extends State<MenuScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    AppStrings.smthWrong,
+                  Text(
+                    AppLocalizations.of(context)!.smthWrong,
                   ),
-                  const Text(
-                    AppStrings.willRetryWrong,
+                  Text(
+                    AppLocalizations.of(context)!.willRetryWrong,
                   ),
                   const SizedBox(height: 30),
                   TextButton(
@@ -225,8 +225,8 @@ class MenuScreenState extends State<MenuScreen> {
                       locationsBloc.add(LoadLocationsList());
                       _categoriesListBloc.add(LoadCategoriesList());
                     },
-                    child: const Text(
-                      AppStrings.retryLoad,
+                    child: Text(
+                      AppLocalizations.of(context)!.retryLoad,
                     ),
                   ),
                 ],

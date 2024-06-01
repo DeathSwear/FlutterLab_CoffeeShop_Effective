@@ -1,3 +1,13 @@
 {
-    "title": "Кофейня"
+    "@@locale": "ru",
+    "title": "Кофейня",
+    "bottomsheetMakeAnOrder": "Оформить заказ",
+    "bottomsheetTitle": "Ваш заказ",
+    "snackBarSucsessful": "Заказ создан",
+    "snackBarError": "Возникла ошибка при заказе",
+    "smthWrong": "Что-то пошло не так",
+    "willRetryWrong": "Попробуйте позже",
+    "retryLoad": "Перезагрузить",
+    "bottomsheetConfirm": "Выбрать",
+    "modalLocationsTitle": "Наши кофейни"
 }

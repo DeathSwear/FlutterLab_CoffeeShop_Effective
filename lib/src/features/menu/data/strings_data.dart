@@ -1,5 +1,5 @@
 class AppStrings {
-  static const String bottomsheetMakeAnOrder = 'Оформить заказ';
+  /*static const String bottomsheetMakeAnOrder = 'Оформить заказ';
   static const String bottomsheetTitle = 'Ваш заказ';
   static const String snackBarSucsessful = 'Заказ создан';
   static const String snackBarError = 'Возникла ошибка при заказе';
@@ -8,5 +8,5 @@ class AppStrings {
   static const String retryLoad = 'Перезагрузить';
 
   static const String bottomsheetConfirm = 'Выбрать';
-  static const String modalLocationsTitle = 'Наши кофейни';
+  static const String modalLocationsTitle = 'Наши кофейни';*/
 }

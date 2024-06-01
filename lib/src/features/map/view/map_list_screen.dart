@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_course/src/features/map/bloc/locations_list_bloc.dart';
-import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapListScreen extends StatefulWidget {
   const MapListScreen({Key? key}) : super(key: key);
@@ -24,8 +24,8 @@ class _MapListScreenState extends State<MapListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          AppStrings.modalLocationsTitle,
+        title: Text(
+          AppLocalizations.of(context)!.modalLocationsTitle,
           style: AppTextStyles.modalLocationsTitle,
         ),
       ),
