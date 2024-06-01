@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/products/products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/models/tag_model.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/coffee_card.dart';
@@ -42,6 +43,11 @@ class CategoryState extends State<Category> {
     super.dispose();
   }
 
+  void deleteThisCategory() {
+    final _categoriesListBloc = GetIt.I<CategoriesListBloc>();
+    _categoriesListBloc.add(DeleteCategory(tag: widget.data));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,6 +66,7 @@ class CategoryState extends State<Category> {
             bloc: _productsListBloc,
             builder: (context, state) {
               if (state is ProductsListLoaded) {
+                if (state.productsList.isEmpty) deleteThisCategory();
                 return ListView.separated(
                   controller: _scrollController,
                   scrollDirection: Axis.horizontal,

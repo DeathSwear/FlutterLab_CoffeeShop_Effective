@@ -11,9 +11,11 @@ class CategoriesListBloc
   CategoriesListBloc(this.categoriesRepository)
       : super(CategoriesListInitial()) {
     on<LoadCategoriesList>(_load);
+    on<DeleteCategory>(_deleteCategory);
   }
 
   final AbstractMenuCategoriesRepository categoriesRepository;
+  List<TagModel> tags = [];
 
   Future<void> _load(
     LoadCategoriesList event,
@@ -23,10 +25,18 @@ class CategoriesListBloc
       if (state is! CategoriesListLoaded) {
         emit(CategoriesListLoading());
       }
-      final tagsList = await categoriesRepository.getCategoriesTagsList();
-      emit(CategoriesListLoaded(tagsList: tagsList));
+      tags = await categoriesRepository.getCategoriesTagsList();
+      emit(CategoriesListLoaded(tagsList: tags));
     } catch (e) {
       emit(CategoriesListLoadingFailure(exception: e));
     }
+  }
+
+  Future<void> _deleteCategory(
+    DeleteCategory event,
+    Emitter<CategoriesListState> emit,
+  ) async {
+    tags.remove(event.tag);
+    emit(CategoriesListLoaded(tagsList: tags));
   }
 }

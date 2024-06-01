@@ -42,7 +42,6 @@ class MenuCategoriesAPI implements AbstractMenuCategoriesRepository {
   @override
   Future<List<CardModel>> getProductsByCategoryList(int id, page) async {
     developer.log('start get ProductsByCategory', name: 'API');
-    //final localeType = Intl.getCurrentLocale();
     final localeType = ui.window.locale;
     Response<dynamic> productsResponse;
     List<CardModel> productsByCategoryID = [];

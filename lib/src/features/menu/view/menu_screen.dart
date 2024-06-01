@@ -52,8 +52,7 @@ class MenuScreenState extends State<MenuScreen> {
 
   bool onBottom = false;
 
-  final _categoriesListBloc =
-      CategoriesListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
+  final _categoriesListBloc = GetIt.I<CategoriesListBloc>();
   int listTagsLength = 0;
   @override
   void initState() {
