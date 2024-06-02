@@ -192,16 +192,13 @@ class MenuScreenState extends State<MenuScreen> {
         builder: (context, state) {
           if (state is CategoriesListLoaded) {
             listTagsLength = state.tagsList.length;
-            return Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: ScrollablePositionedList.separated(
-                separatorBuilder: (context, _) => const SizedBox(height: 16),
-                itemCount: state.tagsList.length,
-                itemScrollController: itemController,
-                itemPositionsListener: itemListener,
-                itemBuilder: (context, index) => Category(
-                  data: state.tagsList[index],
-                ),
+            return ScrollablePositionedList.separated(
+              separatorBuilder: (context, _) => const SizedBox(height: 16),
+              itemCount: state.tagsList.length,
+              itemScrollController: itemController,
+              itemPositionsListener: itemListener,
+              itemBuilder: (context, index) => Category(
+                data: state.tagsList[index],
               ),
             );
           }

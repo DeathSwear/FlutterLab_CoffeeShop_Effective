@@ -51,7 +51,7 @@ class CategoryState extends State<Category> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 16, left: 16),
           child: Text(
             widget.data.tag,
             style: AppTextStyles.title,
@@ -67,8 +67,12 @@ class CategoryState extends State<Category> {
                 return ListView.separated(
                   controller: _scrollController,
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) =>
-                      CoffeeCard(data: state.productsList[index]),
+                  itemBuilder: (context, index) => index == 0
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: CoffeeCard(data: state.productsList[index]),
+                        )
+                      : CoffeeCard(data: state.productsList[index]),
                   separatorBuilder: (context, _) => const SizedBox(width: 16),
                   itemCount: state.productsList.length,
                 );
