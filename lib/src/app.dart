@@ -19,7 +19,6 @@ class CoffeeShopApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: L10n.all,
-      locale: const Locale('ru'),
       onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
       theme: theme,
       home: MenuScreen(),

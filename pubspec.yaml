@@ -52,6 +52,16 @@ dependencies:
   firebase_messaging: ^14.9.2
   flutter_local_notifications: ^17.1.2
   intl: any
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  image_path_android: "lib/src/assets/images/coffeeicon.png"
+  image_path_ios: "lib/src/assets/images/coffeeicon.png"
+  android: true
+  ios: true
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  background_color_ios: "#ffffff"
 
 dev_dependencies:
   flutter_test:
