@@ -263,7 +263,7 @@ class MenuScreenState extends State<MenuScreen> {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          '${state.counter.toStringAsFixed(2)} ${ui.window.locale == 'ru' ? '₽' : 'USD'}',
+                          '${state.counter.toStringAsFixed(2)} ${ui.window.locale.languageCode == 'ru' ? '₽' : 'USD'}',
                           style: AppTextStyles.price,
                         ),
                       ],
