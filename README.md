@@ -1,16 +1,14 @@
 # flutter_course
+Это 1-я лабораторная 2-го семестра курсов Effective по Flutter.
 
-A new Flutter project.
+Реализованы:
+- Экран меню:
+  - AppBar в виде списка тегов, которые автоматически подсвечивают текущую тематику основного контента. Так же, автоматически скроллятся, что бы тег с текущей тематикой оставался слева
+  - Основной контент в виде ScrollablePositionedList, содержащего категории товаров с их горизонтальным списком для дальнейшего взаимодействия
+    - При нажатии на цену, кнопка заменяется на количество товаров в корзине а так же кнопки - и +
+      - Максимальное количество одного товара 10 шт
+    - Картинка имеет индикатор подгрузки
+    - Так же картинка имеет заглушку, на случай ошибки загрузки.
 
-## Getting Started
+![1](https://github.com/DeathSwear/FlutterLab_CoffeeShop_Effective/assets/66869182/b1661f72-a45d-44c8-b1c5-ed5f87cc6cb9) ![2](https://github.com/DeathSwear/FlutterLab_CoffeeShop_Effective/assets/66869182/b12c3eb7-ee5c-43eb-b78b-26520a6f98e9)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
