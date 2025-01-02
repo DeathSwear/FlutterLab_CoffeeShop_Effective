@@ -1,4 +1,3 @@
-# flutter_course
 
 Release version 1.0.0!
 
@@ -24,3 +23,4 @@ The launch procedure is standard, there are no peculiarities.
 
 ![5](https://github.com/DeathSwear/FlutterLab_CoffeeShop_Effective/assets/66869182/f472355f-f539-4501-899f-8e72ab2412e1)
 ![6](https://github.com/DeathSwear/FlutterLab_CoffeeShop_Effective/assets/66869182/379ed82d-f7cd-4faf-8e7d-5f652965e54c)
+
