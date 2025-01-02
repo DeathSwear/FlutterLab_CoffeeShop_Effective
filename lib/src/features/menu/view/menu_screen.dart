@@ -5,14 +5,14 @@ import 'package:flutter_course/src/features/map/view/map_screen.dart';
 import 'package:flutter_course/src/features/menu/bloc/categories/categories_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/bloc/selected_products/selected_products_list_bloc.dart';
 import 'package:flutter_course/src/features/menu/data/button_styles.dart';
-import 'package:flutter_course/src/features/menu/data/strings_data.dart';
 import 'package:flutter_course/src/features/menu/data/text_styles.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/bottom_sheet.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/category.dart';
-import 'package:flutter_course/src/repositories/menu_categories/abstract_categories.dart';
 import 'package:flutter_course/src/theme/app_colors.dart';
 import 'package:get_it/get_it.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'dart:ui' as ui;
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -22,7 +22,6 @@ class MenuScreen extends StatefulWidget {
 
 class MenuScreenState extends State<MenuScreen> {
   final itemListener = ItemPositionsListener.create();
-
   bool playingAnimation = false;
   int current = 0;
   void setCurrent(int newCurrent) {
@@ -52,8 +51,7 @@ class MenuScreenState extends State<MenuScreen> {
 
   bool onBottom = false;
 
-  final _categoriesListBloc =
-      CategoriesListBloc(GetIt.I<AbstractMenuCategoriesRepository>());
+  final _categoriesListBloc = GetIt.I<CategoriesListBloc>();
   int listTagsLength = 0;
   @override
   void initState() {
@@ -194,16 +192,13 @@ class MenuScreenState extends State<MenuScreen> {
         builder: (context, state) {
           if (state is CategoriesListLoaded) {
             listTagsLength = state.tagsList.length;
-            return Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: ScrollablePositionedList.separated(
-                separatorBuilder: (context, _) => const SizedBox(height: 16),
-                itemCount: state.tagsList.length,
-                itemScrollController: itemController,
-                itemPositionsListener: itemListener,
-                itemBuilder: (context, index) => Category(
-                  data: state.tagsList[index],
-                ),
+            return ScrollablePositionedList.separated(
+              separatorBuilder: (context, _) => const SizedBox(height: 16),
+              itemCount: state.tagsList.length,
+              itemScrollController: itemController,
+              itemPositionsListener: itemListener,
+              itemBuilder: (context, index) => Category(
+                data: state.tagsList[index],
               ),
             );
           }
@@ -213,11 +208,11 @@ class MenuScreenState extends State<MenuScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    AppStrings.smthWrong,
+                  Text(
+                    AppLocalizations.of(context)!.smthWrong,
                   ),
-                  const Text(
-                    AppStrings.willRetryWrong,
+                  Text(
+                    AppLocalizations.of(context)!.willRetryWrong,
                   ),
                   const SizedBox(height: 30),
                   TextButton(
@@ -225,8 +220,8 @@ class MenuScreenState extends State<MenuScreen> {
                       locationsBloc.add(LoadLocationsList());
                       _categoriesListBloc.add(LoadCategoriesList());
                     },
-                    child: const Text(
-                      AppStrings.retryLoad,
+                    child: Text(
+                      AppLocalizations.of(context)!.retryLoad,
                     ),
                   ),
                 ],
@@ -265,7 +260,7 @@ class MenuScreenState extends State<MenuScreen> {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          '${state.counter.toStringAsFixed(2)} ₽',
+                          '${state.counter.toStringAsFixed(2)} ${ui.window.locale.languageCode == 'ru' ? '₽' : 'USD'}',
                           style: AppTextStyles.price,
                         ),
                       ],

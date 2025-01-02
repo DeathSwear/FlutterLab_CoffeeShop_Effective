@@ -6,27 +6,37 @@ import 'dart:async';
 part 'categories_list_event.dart';
 part 'categories_list_state.dart';
 
-class CategoriesListBloc extends Bloc<CategoriesListEvent, CategoriesListState> {
-  CategoriesListBloc(this.categoriesRepository) : super(CategoriesListInitial()) {
+class CategoriesListBloc
+    extends Bloc<CategoriesListEvent, CategoriesListState> {
+  CategoriesListBloc(this.categoriesRepository)
+      : super(CategoriesListInitial()) {
     on<LoadCategoriesList>(_load);
+    on<DeleteCategory>(_deleteCategory);
   }
 
   final AbstractMenuCategoriesRepository categoriesRepository;
+  List<TagModel> tags = [];
 
   Future<void> _load(
-      LoadCategoriesList event,
-      Emitter<CategoriesListState> emit,
-      ) async {
+    LoadCategoriesList event,
+    Emitter<CategoriesListState> emit,
+  ) async {
     try {
       if (state is! CategoriesListLoaded) {
         emit(CategoriesListLoading());
       }
-      final tagsList = await categoriesRepository.getCategoriesTagsList();
-      emit(CategoriesListLoaded(tagsList: tagsList));
+      tags = await categoriesRepository.getCategoriesTagsList();
+      emit(CategoriesListLoaded(tagsList: tags));
     } catch (e) {
       emit(CategoriesListLoadingFailure(exception: e));
-    } finally {
-      event.completer?.complete();
     }
+  }
+
+  Future<void> _deleteCategory(
+    DeleteCategory event,
+    Emitter<CategoriesListState> emit,
+  ) async {
+    tags.remove(event.tag);
+    emit(CategoriesListLoaded(tagsList: tags));
   }
 }

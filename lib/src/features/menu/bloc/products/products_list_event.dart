@@ -5,9 +5,6 @@ abstract class ProductsListEvent {}
 class LoadProductsList extends ProductsListEvent {
   LoadProductsList({
     required this.categoryID,
-    this.completer,
   });
   final int categoryID;
-  final Completer? completer;
-
 }

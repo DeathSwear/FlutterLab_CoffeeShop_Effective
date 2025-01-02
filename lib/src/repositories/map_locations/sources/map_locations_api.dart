@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_course/src/features/map/models/named_location.dart';
-import 'dart:developer' as developer;
 import 'package:flutter_course/src/repositories/map_locations/abstract_map_locations.dart';
 
 class MapLocationsAPI implements AbstractMapLocationsRepository {
@@ -11,7 +10,6 @@ class MapLocationsAPI implements AbstractMapLocationsRepository {
 
   @override
   Future<List<NamedLocation>> getLocations() async {
-    developer.log('start getTags', name: 'API');
     Response<dynamic> categoriesResponse;
     List<NamedLocation> rawCategories = [];
     try {
@@ -28,10 +26,8 @@ class MapLocationsAPI implements AbstractMapLocationsRepository {
           ),
         ),
       );
-      developer.log('locations return', name: 'API');
       return rawCategories;
     } catch (e) {
-      developer.log('locations error, rethrow', name: 'API');
       rethrow;
     }
   }

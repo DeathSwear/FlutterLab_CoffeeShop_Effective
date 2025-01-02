@@ -1,0 +1,13 @@
+{
+    "@@locale": "en",
+    "title": "Coffee shop",
+    "bottomsheetMakeAnOrder": "Place an order",
+    "bottomsheetTitle": "Your order",
+    "snackBarSucsessful": "The order has been created",
+    "snackBarError": "There was an error when ordering",
+    "smthWrong": "Something went wrong",
+    "willRetryWrong": "Try again later",
+    "retryLoad": "Reload",
+    "bottomsheetConfirm": "Select",
+    "modalLocationsTitle": "Our coffee shops"
+}
